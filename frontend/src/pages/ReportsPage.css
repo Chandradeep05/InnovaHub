@@ -1,0 +1,49 @@
+/* Reports Page — Premium Dark Theme */
+.reports-list {
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+.report-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.report-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent-primary), #8b5cf6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.report-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(45, 212, 191, 0.06);
+}
+
+.report-card:hover::after {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .report-card {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 1.5rem;
+  }
+  
+  .report-actions {
+    width: 100%;
+  }
+  
+  .report-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

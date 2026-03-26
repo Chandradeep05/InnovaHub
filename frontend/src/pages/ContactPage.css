@@ -1,0 +1,65 @@
+/* Contact Page — Premium Dark Theme */
+.contact-page {
+  padding-top: 1rem;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.contact-info {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-info h3 {
+  margin-bottom: 0.5rem;
+  color: var(--accent-hover);
+}
+
+.info-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.info-item i {
+  font-size: 1.25rem;
+  color: var(--accent-primary);
+  margin-top: 0.25rem;
+  width: 24px;
+  text-align: center;
+}
+
+.info-item h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.info-item p {
+  font-size: 0.95rem;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.contact-form {
+  padding: 2.5rem;
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,127 @@
+/* Calendar dark theme */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.calendar-day-header {
+  background-color: rgba(20, 184, 166, 0.08);
+  font-size: 0.9rem;
+  color: var(--accent-hover);
+  font-weight: 600;
+}
+
+.calendar-day {
+  background-color: var(--bg-surface);
+  min-height: 100px;
+  padding: 0.5rem;
+  transition: background-color 0.3s;
+}
+
+.calendar-day:hover {
+  background-color: var(--bg-elevated);
+}
+
+.calendar-day.empty {
+  background-color: rgba(17, 24, 39, 0.5);
+}
+
+.calendar-day.today {
+  background-color: rgba(20, 184, 166, 0.1);
+  border: 1px solid rgba(20, 184, 166, 0.2);
+}
+
+.calendar-day.past {
+  background-color: rgba(17, 24, 39, 0.6);
+  opacity: 0.7;
+}
+
+.date-number {
+  font-weight: 600;
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.calendar-day.today .date-number {
+  background: linear-gradient(135deg, var(--accent-primary), #06b6d4);
+  color: white;
+  box-shadow: 0 0 10px rgba(20, 184, 166, 0.3);
+}
+
+.day-events {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.event-marker {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.event-marker:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.event-marker.future-event {
+  background: linear-gradient(135deg, var(--accent-primary), #0891b2);
+  color: white;
+}
+
+.event-marker.past-event {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+.past-event-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.past-event-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Tabs */
+.tabs .btn {
+  border-radius: 50px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.tabs .btn.btn-primary {
+  box-shadow: 0 0 15px rgba(20, 184, 166, 0.2);
+}
+
+@media (max-width: 768px) {
+  .calendar-day {
+    min-height: 65px;
+    padding: 0.25rem;
+  }
+  .event-marker {
+    font-size: 0.62rem;
+    padding: 2px;
+  }
+}

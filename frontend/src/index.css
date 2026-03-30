@@ -59,12 +59,35 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
-  /* Subtle grid texture */
-  background-image: 
-    radial-gradient(rgba(45, 212, 191, 0.03) 1px, transparent 1px),
-    radial-gradient(rgba(139, 92, 246, 0.02) 1px, transparent 1px);
-  background-size: 40px 40px, 80px 80px;
-  background-position: 0 0, 40px 40px;
+}
+
+/* ============================================
+   🌐 3D CANVAS Z-INDEX LAYERING
+   ============================================ */
+#three-canvas {
+  z-index: 0;
+}
+
+.navbar {
+  position: relative;
+  z-index: 100;
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+}
+
+.footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Modal and overlay z-index */
+.modal,
+.lightbox-overlay,
+.video-modal-overlay {
+  z-index: 1050 !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -324,62 +347,280 @@ a:hover {
 }
 
 /* ============================================
-   📝 FORM ELEMENTS — Dark & Glowing
+   📝 FORM ELEMENTS — Premium Dark Glassmorphism
    ============================================ */
 .input-group {
   margin-bottom: 1.5rem;
 }
 
-.input-label {
+.input-label,
+.form-label,
+label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
-.input-field {
-  width: 100%;
-  padding: 0.85rem 1.2rem;
-  background-color: rgba(17, 24, 39, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-family: var(--font-sans);
-  transition: var(--transition);
-  font-size: 0.95rem;
-}
-
-.input-field:focus {
-  outline: none;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15), 0 0 20px rgba(20, 184, 166, 0.1);
-  background-color: rgba(30, 41, 59, 0.9);
-}
-
-.input-field::placeholder {
-  color: rgba(148, 163, 184, 0.5);
-}
-
-/* Bootstrap form overrides */
+/* Base input styling — applies to all text inputs, textareas, selects */
+.input-field,
 .form-control,
-.form-select {
-  background-color: rgba(17, 24, 39, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+.form-select,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.9rem 1.3rem;
+  background: rgba(15, 20, 35, 0.7) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-md) !important;
   color: var(--text-primary) !important;
-  transition: var(--transition);
-  border-radius: var(--radius-sm) !important;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 400;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  line-height: 1.5;
 }
 
+/* Hover state */
+.input-field:hover,
+.form-control:hover,
+.form-select:hover,
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[type="search"]:hover,
+textarea:hover,
+select:hover {
+  border-color: rgba(45, 212, 191, 0.25) !important;
+  background: rgba(20, 28, 48, 0.75) !important;
+}
+
+/* Focus state — glowing teal border + ring */
+.input-field:focus,
 .form-control:focus,
-.form-select:focus {
+.form-select:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+textarea:focus,
+select:focus {
   border-color: var(--accent-primary) !important;
-  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15) !important;
-  background-color: rgba(30, 41, 59, 0.9) !important;
+  box-shadow: 
+    0 0 0 3px rgba(20, 184, 166, 0.12),
+    0 0 20px rgba(20, 184, 166, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.2) !important;
+  background: rgba(20, 30, 50, 0.9) !important;
 }
 
-.form-control::placeholder {
-  color: rgba(148, 163, 184, 0.5) !important;
+/* Placeholder */
+.input-field::placeholder,
+.form-control::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: rgba(148, 163, 184, 0.4) !important;
+  font-weight: 400;
+}
+
+/* Textarea specific */
+textarea.form-control,
+textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+/* Select dropdown arrow fix */
+.form-select,
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 1rem center !important;
+  background-size: 1.2rem !important;
+  padding-right: 2.8rem;
+  cursor: pointer;
+}
+
+.form-select option,
+select option {
+  background-color: #111827;
+  color: var(--text-primary);
+  padding: 0.75rem;
+}
+
+/* Search inputs — pill shape with icon padding */
+input[type="search"],
+.search-input,
+.form-control.rounded-pill {
+  border-radius: 50px !important;
+  padding-left: 2.8rem;
+}
+
+/* Input with left icon — used in Gallery/Members search bars */
+.position-relative > .form-control,
+.position-relative > input {
+  padding-left: 2.8rem !important;
+}
+
+.position-relative > .fa-search,
+.position-relative > i.fas.fa-search {
+  color: var(--accent-primary) !important;
+  opacity: 0.7;
+  z-index: 2;
+}
+
+/* Checkbox & Radio — custom dark styling */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 18px !important;
+  height: 18px !important;
+  padding: 0 !important;
+  accent-color: var(--accent-primary);
+  cursor: pointer;
+  border-radius: 4px !important;
+}
+
+/* File inputs */
+input[type="file"] {
+  padding: 0.7rem 1rem !important;
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+  background: linear-gradient(135deg, var(--accent-primary), #0891b2);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: linear-gradient(135deg, #2dd4bf, var(--accent-primary));
+  box-shadow: 0 0 15px rgba(20, 184, 166, 0.3);
+}
+
+/* Disabled state */
+input:disabled,
+textarea:disabled,
+select:disabled,
+.form-control:disabled,
+.form-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(17, 24, 39, 0.5) !important;
+}
+
+/* Input groups (Bootstrap) */
+.input-group .form-control {
+  border-radius: var(--radius-md) !important;
+}
+
+.input-group-text {
+  background: rgba(20, 184, 166, 0.08) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+  color: var(--accent-primary) !important;
+  font-weight: 600;
+}
+
+/* ============================================
+   🔍 SEARCH BAR — Premium Floating Style
+   ============================================ */
+.global-search-input,
+.search-bar input,
+[class*="search"] input[type="text"],
+[class*="search"] .form-control {
+  background: rgba(15, 20, 35, 0.8) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 50px !important;
+  padding: 0.85rem 1.5rem 0.85rem 2.8rem !important;
+  font-size: 0.95rem;
+  backdrop-filter: blur(16px);
+}
+
+.global-search-input:focus,
+.search-bar input:focus,
+[class*="search"] input[type="text"]:focus,
+[class*="search"] .form-control:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 
+    0 0 0 3px rgba(20, 184, 166, 0.1),
+    0 4px 24px rgba(20, 184, 166, 0.12),
+    0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* ============================================
+   🎯 FILTER PANELS — Gallery/Members/Reports
+   ============================================ */
+.glass-card.sticky-top,
+.glass-panel.sticky-top,
+.filter-panel {
+  background: rgba(15, 20, 35, 0.75) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: var(--radius-xl) !important;
+}
+
+.filter-panel h4,
+.glass-card.sticky-top h4 {
+  color: var(--accent-hover);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Button group toggle (Gallery Photos/Videos) */
+.btn-group {
+  background: rgba(15, 20, 35, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xl) !important;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-group .btn {
+  border-radius: 0 !important;
+  border: none !important;
+  font-weight: 600;
+  padding: 0.65rem 1.8rem;
+  transition: var(--transition);
+}
+
+.btn-group .btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), #0891b2) !important;
+  color: #fff !important;
+  box-shadow: 0 0 15px rgba(20, 184, 166, 0.2);
+}
+
+.btn-group .btn-light,
+.btn-group .btn:not(.btn-primary) {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+}
+
+.btn-group .btn-light:hover,
+.btn-group .btn:not(.btn-primary):hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--text-primary) !important;
 }
 
 /* ============================================

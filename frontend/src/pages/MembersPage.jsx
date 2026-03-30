@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './MembersPage.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const MembersPage = () => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +23,7 @@ const MembersPage = () => {
 
   const fetchMembers = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/members');
+      const response = await fetch(`${API_URL}/api/members`);
       if (response.ok) {
         const data = await response.json();
         setMembers(data);
@@ -62,7 +64,7 @@ const MembersPage = () => {
 
     try {
       // In a real app this would post to an API that accepts join applications
-      const response = await fetch('http://localhost:5000/api/members/join', {
+      const response = await fetch(`${API_URL}/api/members/join`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(joinForm),

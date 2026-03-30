@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const AdminAddEventPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -35,7 +37,7 @@ const AdminAddEventPage = () => {
     setSuccess(false);
 
     try {
-      const response = await fetch('http://localhost:5000/api/events', {
+      const response = await fetch(`${API_URL}/api/events`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

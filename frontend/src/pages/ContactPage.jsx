@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './ContactPage.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const ContactPage = () => {
   const [formData, setFormData] = useState({
     name: '', email: '', subject: '', message: ''
@@ -37,7 +39,7 @@ const ContactPage = () => {
     setStatus({ type: '', message: '' });
 
     try {
-      const response = await fetch('http://localhost:5000/api/contact', {
+      const response = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, attachment_name: attachment ? attachment.name : null }),

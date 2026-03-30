@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(null);
@@ -22,7 +24,7 @@ const AdminDashboardPage = () => {
     setAdmin(JSON.parse(userStr));
 
     // Fetch stats (Dummy fallback if backend fails)
-    fetch('http://localhost:5000/api/events')
+    fetch(`${API_URL}/api/events`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {

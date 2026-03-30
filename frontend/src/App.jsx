@@ -1,7 +1,13 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import ErrorBoundary from './components/ErrorBoundary';
+import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import GlobalSearch from './components/ui/GlobalSearch';
+import ThreeBackground from './components/ui/ThreeBackground';
+import { startKeepAlive, stopKeepAlive } from './services/keepAlive';
 import HomePage from './pages/HomePage';
 import EventsPage from './pages/EventsPage';
 import ContactPage from './pages/ContactPage';
@@ -23,49 +29,50 @@ import AdminReportsPage from './pages/admin/AdminReportsPage';
 import AdminMembersPage from './pages/admin/AdminMembersPage';
 import AdminEmailHubPage from './pages/admin/AdminEmailHubPage';
 
-// Placeholder Component for missing routes
-const Placeholder = ({ title }) => (
-  <div className="container" style={{ padding: '4rem 2rem', textAlign: 'center', minHeight: '60vh' }}>
-    <h1>{title}</h1>
-    <p style={{ marginTop: '1rem', color: 'var(--text-secondary)' }}>This page is currently under construction. Check back later!</p>
-  </div>
-);
-
 function App() {
+  // Keep Render backend warm (ping every 4 min)
+  useEffect(() => {
+    startKeepAlive();
+    return () => stopKeepAlive();
+  }, []);
+
   return (
-    <Router>
-      <Navbar />
-      <GlobalSearch />
-      <main className="main-content">
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/events" element={<EventsPage />} />
-          
-          {/* Content Pages */}
-          <Route path="/innovation-hub" element={<InnovationHubPage />} />
-          <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/members" element={<MembersPage />} />
-          <Route path="/about" element={<AboutUsPage />} />
-          <Route path="/my-journey" element={<MemberDashboardPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminDashboardPage />} />
-          <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-          <Route path="/admin/events/add" element={<AdminAddEventPage />} />
-          <Route path="/admin/queries" element={<AdminQueriesPage />} />
-          <Route path="/admin/ideas" element={<AdminIdeasPage />} />
-          <Route path="/admin/gallery" element={<AdminGalleryPage />} />
-          <Route path="/admin/reports" element={<AdminReportsPage />} />
-          <Route path="/admin/members" element={<AdminMembersPage />} />
-          <Route path="/admin/emails" element={<AdminEmailHubPage />} />
-        </Routes>
-      </main>
-      <Footer />
-    </Router>
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <ThreeBackground />
+          <Navbar />
+          <GlobalSearch />
+          <main className="main-content">
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutUsPage />} />
+              <Route path="/events" element={<EventsPage />} />
+              <Route path="/innovation-hub" element={<InnovationHubPage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/reports" element={<ReportsPage />} />
+              <Route path="/members" element={<MembersPage />} />
+              <Route path="/my-journey" element={<MemberDashboardPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              
+              {/* Admin Routes — Protected */}
+              <Route path="/admin/login" element={<AdminLoginPage />} />
+              <Route path="/admin" element={<ProtectedRoute><AdminDashboardPage /></ProtectedRoute>} />
+              <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboardPage /></ProtectedRoute>} />
+              <Route path="/admin/events/add" element={<ProtectedRoute><AdminAddEventPage /></ProtectedRoute>} />
+              <Route path="/admin/queries" element={<ProtectedRoute><AdminQueriesPage /></ProtectedRoute>} />
+              <Route path="/admin/ideas" element={<ProtectedRoute><AdminIdeasPage /></ProtectedRoute>} />
+              <Route path="/admin/gallery" element={<ProtectedRoute><AdminGalleryPage /></ProtectedRoute>} />
+              <Route path="/admin/reports" element={<ProtectedRoute><AdminReportsPage /></ProtectedRoute>} />
+              <Route path="/admin/members" element={<ProtectedRoute><AdminMembersPage /></ProtectedRoute>} />
+              <Route path="/admin/emails" element={<ProtectedRoute><AdminEmailHubPage /></ProtectedRoute>} />
+            </Routes>
+          </main>
+          <Footer />
+        </Router>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

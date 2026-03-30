@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const AdminMembersPage = () => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +25,7 @@ const AdminMembersPage = () => {
 
   const fetchMembers = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/members');
+      const res = await fetch(`${API_URL}/api/members`);
       if (!res.ok) throw new Error('Failed to fetch');
       setMembers(await res.json());
     } catch (err) { 
@@ -42,7 +44,7 @@ const AdminMembersPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/admin/members', {
+      const res = await fetch(`${API_URL}/api/admin/members`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
         body: JSON.stringify(formData)

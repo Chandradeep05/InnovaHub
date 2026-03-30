@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './InnovationHubPage.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const InnovationHubPage = () => {
   const [activeTab, setActiveTab] = useState('submit'); // submit, projects, resources
   
@@ -40,7 +42,7 @@ const InnovationHubPage = () => {
     setProjectsLoading(true);
     try {
       // In a real app we'd fetch from /api/ideas?status=Approved
-      const res = await fetch('http://localhost:5000/api/ideas');
+      const res = await fetch(`${API_URL}/api/ideas`);
       if (res.ok) {
         const data = await res.json();
         const approved = data.filter(idea => idea.status === 'Approved');
@@ -82,7 +84,7 @@ const InnovationHubPage = () => {
       // Since backend might not support multipart file upload yet, we'll send JSON
       // and simulate the file upload in the UI.
 
-      const response = await fetch('http://localhost:5000/api/ideas', {
+      const response = await fetch(`${API_URL}/api/ideas`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -3,6 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import EventCard from '../components/ui/EventCard';
 import './EventsPage.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,7 +51,7 @@ const EventsPage = () => {
 
   const fetchEvents = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/events');
+      const res = await fetch(`${API_URL}/api/events`);
       if (!res.ok) throw new Error('Failed to fetch events');
       const data = await res.json();
       setEvents(data);
@@ -111,7 +113,7 @@ const EventsPage = () => {
     setRegStatus({ type: '', message: '' });
 
     try {
-      const response = await fetch('http://localhost:5000/api/registrations', {
+      const response = await fetch(`${API_URL}/api/registrations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...regData, event_id: selectedEvent.id }),

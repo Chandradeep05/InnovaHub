@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const AdminGalleryPage = () => {
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +25,7 @@ const AdminGalleryPage = () => {
 
   const fetchPhotos = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/photos');
+      const res = await fetch(`${API_URL}/api/photos`);
       if (!res.ok) throw new Error('Failed to fetch');
       setPhotos(await res.json());
     } catch (err) { 
@@ -41,7 +43,7 @@ const AdminGalleryPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/admin/photos', {
+      const res = await fetch(`${API_URL}/api/admin/photos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
         body: JSON.stringify(formData)

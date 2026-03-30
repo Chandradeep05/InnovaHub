@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import EventCard from '../components/ui/EventCard';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const HomePage = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +12,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/events');
+        const response = await fetch(`${API_URL}/api/events`);
         const data = await response.json();
         const today = new Date();
         today.setHours(0, 0, 0, 0);

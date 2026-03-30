@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './GalleryPage.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const GalleryPage = () => {
   const [mediaType, setMediaType] = useState('photos'); // photos, videos
   const [photos, setPhotos] = useState([]);
@@ -40,7 +42,7 @@ const GalleryPage = () => {
 
   const fetchPhotos = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/photos');
+      const response = await fetch(`${API_URL}/api/photos`);
       if (response.ok) {
         const data = await response.json();
         setPhotos(data);

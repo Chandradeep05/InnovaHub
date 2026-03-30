@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const AdminIdeasPage = () => {
   const [ideas, setIdeas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +22,7 @@ const AdminIdeasPage = () => {
 
   const fetchIdeas = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/admin/ideas', {
+      const response = await fetch(`${API_URL}/api/admin/ideas`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
       });
       if (!response.ok) throw new Error('Failed to fetch ideas');

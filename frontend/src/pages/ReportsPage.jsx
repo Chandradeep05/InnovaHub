@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './ReportsPage.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const ReportsPage = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +21,7 @@ const ReportsPage = () => {
 
   const fetchReports = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/reports');
+      const response = await fetch(`${API_URL}/api/reports`);
       if (response.ok) {
         const data = await response.json();
         setReports(data);

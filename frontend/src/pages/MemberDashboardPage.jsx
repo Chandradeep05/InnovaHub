@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const MemberDashboardPage = () => {
   const [memberData, setMemberData] = useState(null);
   const [searchEmail, setSearchEmail] = useState('');
@@ -15,8 +17,8 @@ const MemberDashboardPage = () => {
     try {
       // Try to fetch real data
       const [regRes, memberRes] = await Promise.all([
-        fetch(`http://localhost:5000/api/registrations?email=${encodeURIComponent(searchEmail)}`).catch(() => null),
-        fetch(`http://localhost:5000/api/members?email=${encodeURIComponent(searchEmail)}`).catch(() => null),
+        fetch(`${API_URL}/api/registrations?email=${encodeURIComponent(searchEmail)}`).catch(() => null),
+        fetch(`${API_URL}/api/members?email=${encodeURIComponent(searchEmail)}`).catch(() => null),
       ]);
       
       // If API works, use real data; otherwise use demo data

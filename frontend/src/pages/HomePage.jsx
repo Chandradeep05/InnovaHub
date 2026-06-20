@@ -69,7 +69,7 @@ const HomePage = () => {
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <div className="animate-fade-in">
             <span className="badge" style={{ background: 'rgba(20,184,166,0.15)', color: 'var(--accent-hover)', border: '1px solid rgba(20,184,166,0.3)', marginBottom: '1.5rem', fontSize: '0.85rem', padding: '0.5rem 1.2rem' }}>
-              🚀 Institution's Innovation Council
+              🚀 Innovahub(IH)
             </span>
           </div>
           
@@ -164,7 +164,7 @@ const HomePage = () => {
       <section className="particle-bg" style={{ padding: '5rem 0', background: 'linear-gradient(180deg, var(--bg-color) 0%, rgba(17,24,39,0.4) 50%, var(--bg-color) 100%)' }}>
         <div className="container">
           <div className="text-center" style={{ marginBottom: '3rem' }}>
-            <h2 className="animate-fade-in">Why Join <span className="gradient-text">IIC</span>?</h2>
+            <h2 className="animate-fade-in">Why Join <span className="gradient-text">Innovahub(IH)</span>?</h2>
             <div className="glow-divider"></div>
             <p style={{ color: 'var(--text-secondary)', maxWidth: '500px', margin: '0 auto' }}>Be part of something bigger than yourself</p>
           </div>
@@ -197,7 +197,7 @@ const HomePage = () => {
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', position: 'relative' }}>
             <a href="https://forms.gle/uMpubandEjjDhbLH8" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.05rem', borderRadius: '50px' }}>
-              <i className="fas fa-rocket me-2"></i> Join IIC Now
+              <i className="fas fa-rocket me-2"></i> Join Innovahub(IH) Now
             </a>
             <Link to="/contact" className="btn btn-secondary" style={{ padding: '1rem 2.5rem', fontSize: '1.05rem', borderRadius: '50px' }}>
               <i className="fas fa-envelope me-2"></i> Get in Touch

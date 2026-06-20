@@ -13,8 +13,8 @@ const Navbar = () => {
       <div className="container navbar-container">
         <Link to="/" className="navbar-brand">
           <img src="/gtbit-logo.png" alt="GTBIT Logo" className="nav-logo" />
-          <span className="logo-text">IIC Innovates</span>
-          <img src="/iic-logo.png" alt="IIC Logo" className="nav-logo" />
+          <span className="logo-text">Innovahub(IH) Innovates</span>
+          <img src="/innovahub-logo.png" alt="Innovahub(IH) Logo" className="nav-logo" />
         </Link>
         
         {/* Desktop Menu */}
@@ -40,7 +40,7 @@ const Navbar = () => {
             <span className="small pe-2" style={{ color: 'var(--text-secondary)' }}>Search</span>
             <kbd className="small rounded px-1 fw-bold" style={{ fontSize: '0.7rem', background: 'rgba(255,255,255,0.1)', color: 'var(--text-secondary)', border: '1px solid rgba(255,255,255,0.15)' }}>Ctrl K</kbd>
           </button>
-          <a href="https://forms.gle/uMpubandEjjDhbLH8" target="_blank" rel="noopener noreferrer" className="btn btn-primary rounded-pill">Join IIC</a>
+          <a href="https://forms.gle/uMpubandEjjDhbLH8" target="_blank" rel="noopener noreferrer" className="btn btn-primary rounded-pill">Join Innovahub(IH)</a>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -68,7 +68,7 @@ const Navbar = () => {
           <Link to="/members" className="nav-link" onClick={toggleMenu}>Members</Link>
           <Link to="/my-journey" className="nav-link" onClick={toggleMenu}>My Journey</Link>
           <Link to="/contact" className="nav-link" onClick={toggleMenu}>Contact</Link>
-          <a href="https://forms.gle/uMpubandEjjDhbLH8" target="_blank" rel="noopener noreferrer" className="btn btn-primary" onClick={toggleMenu}>Join IIC</a>
+          <a href="https://forms.gle/uMpubandEjjDhbLH8" target="_blank" rel="noopener noreferrer" className="btn btn-primary" onClick={toggleMenu}>Join Innovahub(IH)</a>
         </div>
       )}
     </nav>

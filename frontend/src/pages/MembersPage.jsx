@@ -101,7 +101,7 @@ const MembersPage = () => {
           </div>
           <div className="col-lg-4 text-lg-end">
             <button className="btn btn-primary btn-lg shadow-sm rounded-pill px-4" onClick={() => setShowJoinModal(true)}>
-              <i className="fas fa-rocket me-2"></i> Join IIC
+              <i className="fas fa-rocket me-2"></i> Join Innovahub(IH)
             </button>
           </div>
         </div>
@@ -188,11 +188,11 @@ const MembersPage = () => {
           <div className="modal-dialog modal-lg modal-dialog-centered" onClick={e => e.stopPropagation()}>
             <div className="modal-content glass-panel border-0 shadow-lg" style={{ borderRadius: '20px', overflow: 'hidden' }}>
               <div className="modal-header bg-primary text-white border-bottom-0 py-4">
-                <h4 className="modal-title m-0"><i className="fas fa-handshake me-2"></i> Join IIC Core Team</h4>
+                <h4 className="modal-title m-0"><i className="fas fa-handshake me-2"></i> Join Innovahub(IH) Core Team</h4>
                 <button type="button" className="btn-close btn-close-white" onClick={() => setShowJoinModal(false)}></button>
               </div>
               <div className="modal-body p-4 p-md-5">
-                <p className="text-secondary mb-4">Passionate about innovation? Apply to be a part of the Institution's Innovation Council and help drive the entrepreneurial ecosystem on campus.</p>
+                <p className="text-secondary mb-4">Passionate about innovation? Apply to be a part of the Innovahub(IH) and help drive the entrepreneurial ecosystem on campus.</p>
                 
                 {joinStatus.message && (
                   <div className={`alert alert-${joinStatus.type} mb-4`}>
@@ -256,7 +256,7 @@ const MembersPage = () => {
                       value={joinForm.statement} 
                       onChange={handleJoinChange} 
                       required 
-                      placeholder="Why do you want to join IIC? What can you contribute?"
+                      placeholder="Why do you want to join Innovahub(IH)? What can you contribute?"
                     ></textarea>
                   </div>
 

@@ -20,7 +20,7 @@ const GlobalSearch = () => {
     { title: 'Annual Reports', path: '/reports', category: 'Reports', icon: 'fa-file-pdf' },
     { title: 'Impact Reports', path: '/reports', category: 'Reports', icon: 'fa-file-pdf' },
     { title: 'Members Council', path: '/members', category: 'Page', icon: 'fa-users' },
-    { title: 'Join IIC', path: '/members', category: 'Action', icon: 'fa-handshake' },
+    { title: 'Join Innovahub(IH)', path: '/members', category: 'Action', icon: 'fa-handshake' },
     { title: 'Contact Us', path: '/contact', category: 'Page', icon: 'fa-envelope' },
     { title: 'FAQs', path: '/contact', category: 'Help', icon: 'fa-question-circle' },
   ];
@@ -144,7 +144,7 @@ const GlobalSearch = () => {
         <div className="d-flex justify-content-between align-items-center px-3 py-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
           <span><kbd style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', padding: '1px 5px', borderRadius: '3px', marginRight: '4px' }}>↑↓</kbd> Navigate</span>
           <span><kbd style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', padding: '1px 5px', borderRadius: '3px', marginRight: '4px' }}>↵</kbd> Open</span>
-          <span>Powered by IIC</span>
+          <span>Powered by Innovahub(IH)</span>
         </div>
 
       </div>

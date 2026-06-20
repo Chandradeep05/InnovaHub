@@ -73,7 +73,7 @@ const AdminMembersPage = () => {
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 bg-white p-4 rounded-4 shadow-sm border-0">
           <div>
             <h2 className="mb-1 fw-bold"><i className="fas fa-users-cog text-primary me-2"></i> Council Roster</h2>
-            <p className="text-secondary small mb-0">Manage IIC team members, approve roles, and update student/faculty status.</p>
+            <p className="text-secondary small mb-0">Manage Innovahub(IH) team members, approve roles, and update student/faculty status.</p>
           </div>
           <div className="mt-3 mt-md-0 d-flex gap-2">
             <button className={`btn ${showForm ? 'btn-secondary' : 'btn-primary'} rounded-pill px-4 shadow-sm`} onClick={() => setShowForm(!showForm)}>

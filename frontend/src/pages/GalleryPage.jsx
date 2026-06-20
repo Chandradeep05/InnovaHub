@@ -11,7 +11,7 @@ const GalleryPage = () => {
   // Custom video data (assuming API might not have it yet)
   const [videos] = useState([
     { id: 1, title: 'Hackathon 2025 Highlights', event_name: 'Annual Hackathon', duration: '3:45', thumbnail: 'https://via.placeholder.com/600x400?text=Video+Thumbnail', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' },
-    { id: 2, title: 'IIC Setup & Journey', event_name: 'Orientation', duration: '12:20', thumbnail: 'https://via.placeholder.com/600x400?text=Orientation', url: 'https://player.vimeo.com/video/76979871' },
+    { id: 2, title: 'Innovahub(IH) Setup & Journey', event_name: 'Orientation', duration: '12:20', thumbnail: 'https://via.placeholder.com/600x400?text=Orientation', url: 'https://player.vimeo.com/video/76979871' },
   ]);
 
   // Filters State
@@ -51,7 +51,7 @@ const GalleryPage = () => {
         setPhotos([
           { id: 101, title: 'Team building', event_name: 'Hackathon 2025', category: 'Events', year: 2025, image_url: 'https://via.placeholder.com/800x600?text=Team+Photo' },
           { id: 102, title: 'Prize Distribution', event_name: 'Hackathon 2025', category: 'Events', year: 2025, image_url: 'https://via.placeholder.com/600x800?text=Prize+Distribution' },
-          { id: 103, title: 'Inauguration', event_name: 'IIC Launch', category: 'Events', year: 2024, image_url: 'https://via.placeholder.com/800x500?text=Inauguration' }
+          { id: 103, title: 'Inauguration', event_name: 'Innovahub(IH) Launch', category: 'Events', year: 2024, image_url: 'https://via.placeholder.com/800x500?text=Inauguration' }
         ]);
       }
     } catch (err) {

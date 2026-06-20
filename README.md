@@ -1,5 +1,5 @@
 # <align align="center">⚡ SocietyConnect ⚡</align>
-### <align align="center">**Institution's Innovation Council (IIC) — Modern Community Management Platform**</align>
+### <align align="center">**Innovahub(IH) — Modern Community Management Platform**</align>
 
 <p align="center">
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
@@ -15,7 +15,7 @@
 
 ## 🔮 Overview
 
-**SocietyConnect** is a sample web portal built for college cells, specifically inspired by the **Institution's Innovation Council (IIC)**. The platform provides a sleek, modern, and interactive interface for college students to register for innovation events, submit project pitches, view community members, and download reports. For administrators, it offers a secure command suite to broadcast emails, moderate ideas, oversee event capacity, and manage user interactions.
+**SocietyConnect** is a sample web portal built for college cells, specifically inspired by **Innovahub(IH)**. The platform provides a sleek, modern, and interactive interface for college students to register for innovation events, submit project pitches, view community members, and download reports. For administrators, it offers a secure command suite to broadcast emails, moderate ideas, oversee event capacity, and manage user interactions.
 
 Designed with **glassmorphism**, a futuristic **Three.js particle background**, and smooth micro-animations, SocietyConnect delivers a premium, highly engaging user experience.
 
@@ -196,7 +196,7 @@ npm run dev
 
 > [!WARNING]
 > **Production Security Warning:** The database setup script (`supabase_schema.sql`) seeds a default administrator account for **local development and testing only**.
-> * **Local Testing Email:** `admin@iic.com`
+> * **Local Testing Email:** `admin@innovahub.com`
 > * **Local Testing Password:** `admin123`
 >
 > You **MUST** change these default credentials or remove the seeded record from the `admins` table before deploying the application to a production environment. To modify the default administrator, update the insert statement at the bottom of [supabase_schema.sql](./backend/supabase_schema.sql) or execute an `UPDATE` SQL query in your Supabase SQL Editor.

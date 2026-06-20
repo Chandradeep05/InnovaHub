@@ -55,7 +55,7 @@ router.post('/send', authenticateAdmin, validate({
     });
 
     await transporter.sendMail({
-      from: `"IIC Innovates" <${config.smtp.user}>`,
+      from: `"Innovahub(IH)" <${config.smtp.user}>`,
       to: config.smtp.user,
       bcc: emailList.join(', '),
       subject,

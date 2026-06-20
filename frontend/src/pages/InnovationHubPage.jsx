@@ -26,7 +26,7 @@ const InnovationHubPage = () => {
 
   // Hardcoded Resources as per PRD
   const resources = [
-    { id: 1, name: 'Startup Guide 2026', size: '2.4 MB', desc: 'Comprehensive guide to launching your startup at IIC.', type: 'pdf', url: '#' },
+    { id: 1, name: 'Startup Guide 2026', size: '2.4 MB', desc: 'Comprehensive guide to launching your startup at Innovahub(IH).', type: 'pdf', url: '#' },
     { id: 2, name: 'Pitch Deck Template', size: '5.1 MB', desc: 'Standard PPTX template for idea submissions.', type: 'pptx', url: '#' },
     { id: 3, name: 'Business Model Canvas', size: '1.2 MB', desc: 'One-page business plan template.', type: 'pdf', url: '#' },
     { id: 4, name: 'Funding Resources List', size: '0.8 MB', desc: 'List of seed funds and angel networks.', type: 'pdf', url: '#' },

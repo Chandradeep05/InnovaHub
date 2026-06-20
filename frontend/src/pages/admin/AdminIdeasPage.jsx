@@ -31,10 +31,10 @@ const AdminIdeasPage = () => {
     } catch (err) {
       // Dummy data fallback for UI testing
       setIdeas([
-        { id: 1, tracking_id: 'IIC-IDEA-2041', submitted_at: new Date().toISOString(), student_name: 'Rahul Desai', email: 'rahul@student.edu', title: 'AI-Powered Campus Guide', category: 'Software / IT', pitch_deck_url: '#', status: 'Pending' },
-        { id: 2, tracking_id: 'IIC-IDEA-2042', submitted_at: new Date(Date.now() - 86400000).toISOString(), student_name: 'Priya Sharma', email: 'priya@alumni.edu', title: 'Biodegradable Packaging', category: 'Environment', pitch_deck_url: '#', status: 'Approved' },
-        { id: 3, tracking_id: 'IIC-IDEA-2043', submitted_at: new Date(Date.now() - 172800000).toISOString(), student_name: 'Alex Johnson', email: 'alex@student.edu', title: 'Smart Energy Metering', category: 'IoT / Hardware', pitch_deck_url: '#', status: 'Pending' },
-        { id: 4, tracking_id: 'IIC-IDEA-2044', submitted_at: new Date(Date.now() - 259200000).toISOString(), student_name: 'Neha Gupta', email: 'neha@dept.edu', title: 'AR Library Books', category: 'EdTech', pitch_deck_url: null, status: 'Rejected' },
+        { id: 1, tracking_id: 'IH-IDEA-2041', submitted_at: new Date().toISOString(), student_name: 'Rahul Desai', email: 'rahul@student.edu', title: 'AI-Powered Campus Guide', category: 'Software / IT', pitch_deck_url: '#', status: 'Pending' },
+        { id: 2, tracking_id: 'IH-IDEA-2042', submitted_at: new Date(Date.now() - 86400000).toISOString(), student_name: 'Priya Sharma', email: 'priya@alumni.edu', title: 'Biodegradable Packaging', category: 'Environment', pitch_deck_url: '#', status: 'Approved' },
+        { id: 3, tracking_id: 'IH-IDEA-2043', submitted_at: new Date(Date.now() - 172800000).toISOString(), student_name: 'Alex Johnson', email: 'alex@student.edu', title: 'Smart Energy Metering', category: 'IoT / Hardware', pitch_deck_url: '#', status: 'Pending' },
+        { id: 4, tracking_id: 'IH-IDEA-2044', submitted_at: new Date(Date.now() - 259200000).toISOString(), student_name: 'Neha Gupta', email: 'neha@dept.edu', title: 'AR Library Books', category: 'EdTech', pitch_deck_url: null, status: 'Rejected' },
       ]);
       setError('Using local dummy data: Backend unreachable.');
     } finally {

@@ -88,7 +88,7 @@ const AdminEmailHubPage = () => {
                   required
                 >
                   <option value="ALL_REGISTRANTS">All Event Registrants</option>
-                  <option value="ALL_MEMBERS">All Active IIC Members</option>
+                  <option value="ALL_MEMBERS">All Active Innovahub(IH) Members</option>
                   <option value="ALL_IDEAS">All Idea Submitters</option>
                   <option value="CUSTOM">Custom Email Addresses (Comma separated)</option>
                 </select>
@@ -117,7 +117,7 @@ const AdminEmailHubPage = () => {
                   value={formData.subject} 
                   onChange={handleChange} 
                   className="form-control" 
-                  placeholder="e.g., Invitation to IIC Hackathon 2026"
+                  placeholder="e.g., Invitation to Innovahub(IH) Hackathon 2026"
                   required
                 />
               </div>
@@ -130,7 +130,7 @@ const AdminEmailHubPage = () => {
                   onChange={handleChange} 
                   className="form-control text-monospace" 
                   rows="10" 
-                  placeholder="Dear Participant,&#10;&#10;We are excited to invite you...&#10;&#10;Best Regards,&#10;IIC Team"
+                  placeholder="Dear Participant,&#10;&#10;We are excited to invite you...&#10;&#10;Best Regards,&#10;Innovahub(IH) Team"
                   required
                 ></textarea>
                 <small className="text-secondary mt-2 d-block">

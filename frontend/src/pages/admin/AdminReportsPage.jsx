@@ -31,7 +31,7 @@ const AdminReportsPage = () => {
     } catch (err) { 
         // Dummy data for frontend UI test
         setReports([
-            { id: 1, title: 'IIC Annual Report 2023-24', description: 'Comprehensive coverage of all events and initiatives.', report_type: 'Annual Report', year: 2024, file_size: '4.2 MB', pdf_url: '#' },
+            { id: 1, title: 'Innovahub(IH) Annual Report 2023-24', description: 'Comprehensive coverage of all events and initiatives.', report_type: 'Annual Report', year: 2024, file_size: '4.2 MB', pdf_url: '#' },
             { id: 2, title: 'Hackathon Impact Summary', description: 'Participant metrics and winning ideas.', report_type: 'Event Summary', event_name: 'HackAI 24', year: 2024, file_size: '1.1 MB', pdf_url: '#' },
             { id: 3, title: 'Q1 Financial Disclosures', description: 'Budget utilization for the first quarter.', report_type: 'Financials', year: 2024, file_size: '800 KB', pdf_url: '#' },
         ]);

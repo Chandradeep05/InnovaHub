@@ -30,7 +30,7 @@ const ReportsPage = () => {
         setReports([
           { id: 1, title: 'Annual Blockbuster Report 2025', description: 'Yearly summary of all events', report_type: 'Annual Report', year: 2025, file_size: '3.4 MB', pdf_url: '#', upload_date: '2025-12-15' },
           { id: 2, title: 'Hackathon Impact Summary', event_name: 'Hackathon 2025', description: 'Impact and reach of the hackathon', report_type: 'Impact Report', year: 2025, file_size: '1.2 MB', pdf_url: '#', upload_date: '2025-10-20' },
-          { id: 3, title: 'IIC Launch Event', event_name: 'Orientation', description: 'Inauguration details', report_type: 'Event Report', year: 2024, file_size: '5.6 MB', pdf_url: '#', upload_date: '2024-08-10' }
+          { id: 3, title: 'Innovahub(IH) Launch Event', event_name: 'Orientation', description: 'Inauguration details', report_type: 'Event Report', year: 2024, file_size: '5.6 MB', pdf_url: '#', upload_date: '2024-08-10' }
         ]);
       }
     } catch (err) {
@@ -74,7 +74,7 @@ const ReportsPage = () => {
       <div className="container" style={{ maxWidth: '1200px' }}>
         <div className="section-header text-center">
           <h2>Reports & Documents</h2>
-          <p className="text-secondary">Access official IIC reports, event summaries, and annual publications.</p>
+          <p className="text-secondary">Access official Innovahub(IH) reports, event summaries, and annual publications.</p>
         </div>
 
         {/* Category Tabs */}

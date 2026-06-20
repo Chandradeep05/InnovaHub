@@ -31,9 +31,9 @@ const AdminQueriesPage = () => {
     } catch (err) {
       // Dummy data fallback for UI testing
       setQueries([
-        { id: 1, query_id: 'IIC-1042', submitted_at: new Date().toISOString(), name: 'Alex Johnson', email: 'alex@student.edu', subject: 'Event Registration Issue', message: 'I cannot register for upcoming Hackathon.', status: 'Pending' },
-        { id: 2, query_id: 'IIC-1043', submitted_at: new Date(Date.now() - 86400000).toISOString(), name: 'Priya Sharma', email: 'priya@alumni.edu', subject: 'Collaboration Proposal', message: 'I would like to sponsor an event.', status: 'Pending' },
-        { id: 3, query_id: 'IIC-1044', submitted_at: new Date(Date.now() - 172800000).toISOString(), name: 'Rahul Desai', email: 'rahul@student.edu', subject: 'Idea Submission Query', message: 'Does my pitch need a prototype?', status: 'Resolved' },
+        { id: 1, query_id: 'IH-1042', submitted_at: new Date().toISOString(), name: 'Alex Johnson', email: 'alex@student.edu', subject: 'Event Registration Issue', message: 'I cannot register for upcoming Hackathon.', status: 'Pending' },
+        { id: 2, query_id: 'IH-1043', submitted_at: new Date(Date.now() - 86400000).toISOString(), name: 'Priya Sharma', email: 'priya@alumni.edu', subject: 'Collaboration Proposal', message: 'I would like to sponsor an event.', status: 'Pending' },
+        { id: 3, query_id: 'IH-1044', submitted_at: new Date(Date.now() - 172800000).toISOString(), name: 'Rahul Desai', email: 'rahul@student.edu', subject: 'Idea Submission Query', message: 'Does my pitch need a prototype?', status: 'Resolved' },
       ]);
       setError('Using local dummy data: Backend unreachable.');
     } finally {

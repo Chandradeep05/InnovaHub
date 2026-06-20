@@ -2,8 +2,8 @@ import React from 'react';
 
 const AboutUsPage = () => {
   const leadership = [
-    { name: 'Dr. Rajeev Kumar', role: 'Chairman', category: 'Leadership', department: 'IIC, GTBIT', image: 'https://ui-avatars.com/api/?name=Rajeev+Kumar&background=14b8a6&color=fff&size=300&bold=true', quote: 'Innovation is the bridge between knowledge and impact.' },
-    { name: 'Prof. Neeta Sharma', role: 'President, IIC', category: 'Leadership', department: 'Computer Science', image: 'https://ui-avatars.com/api/?name=Neeta+Sharma&background=8b5cf6&color=fff&size=300&bold=true', quote: 'Every great startup begins with a curious mind.' },
+    { name: 'Dr. Rajeev Kumar', role: 'Chairman', category: 'Leadership', department: 'Innovahub(IH), GTBIT', image: 'https://ui-avatars.com/api/?name=Rajeev+Kumar&background=14b8a6&color=fff&size=300&bold=true', quote: 'Innovation is the bridge between knowledge and impact.' },
+    { name: 'Prof. Neeta Sharma', role: 'President, Innovahub(IH)', category: 'Leadership', department: 'Computer Science', image: 'https://ui-avatars.com/api/?name=Neeta+Sharma&background=8b5cf6&color=fff&size=300&bold=true', quote: 'Every great startup begins with a curious mind.' },
     { name: 'Dr. Amit Verma', role: 'Faculty Mentor', category: 'Mentor', department: 'AI & Data Science', image: 'https://ui-avatars.com/api/?name=Amit+Verma&background=0891b2&color=fff&size=300&bold=true', quote: 'Mentoring the next generation of creators.' },
     { name: 'Dr. Priya Mehta', role: 'Faculty Mentor', category: 'Mentor', department: 'Electronics', image: 'https://ui-avatars.com/api/?name=Priya+Mehta&background=f59e0b&color=fff&size=300&bold=true', quote: 'Technology meets empathy in great innovations.' },
   ];
@@ -18,12 +18,12 @@ const AboutUsPage = () => {
   ];
 
   const milestones = [
-    { year: '2020', title: 'IIC Established', desc: 'GTBIT received the official IIC mandate from MoE Innovation Cell.' },
+    { year: '2020', title: 'Innovahub(IH) Established', desc: 'GTBIT received the official Innovahub(IH) mandate from MoE Innovation Cell.' },
     { year: '2021', title: 'First Hackathon', desc: '200+ participants competed in our inaugural 36-hour hackathon.' },
     { year: '2022', title: 'Star Performer', desc: 'Awarded 4-Star rating by MoE for outstanding innovation activities.' },
     { year: '2023', title: 'Incubation Launch', desc: 'Opened the GTBIT Startup Incubation Hub for student-led ventures.' },
     { year: '2024', title: '50+ Events', desc: 'Hosted over 50 workshops, seminars, and competitions in one year.' },
-    { year: '2025', title: '5-Star Rating', desc: 'Achieved the highest 5-Star IIC rating from the Ministry of Education.' },
+    { year: '2025', title: '5-Star Rating', desc: 'Achieved the highest 5-Star Innovahub(IH) rating from the Ministry of Education.' },
   ];
 
   return (
@@ -99,7 +99,7 @@ const AboutUsPage = () => {
         <div className="text-center" style={{ marginBottom: '3rem' }}>
           <h2 className="animate-fade-in">Core <span className="gradient-text">Team</span></h2>
           <div className="glow-divider"></div>
-          <p style={{ color: 'var(--text-secondary)' }}>The student leaders driving IIC from the front</p>
+          <p style={{ color: 'var(--text-secondary)' }}>The student leaders driving Innovahub(IH) from the front</p>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem' }}>
@@ -146,9 +146,9 @@ const AboutUsPage = () => {
       <section className="container" style={{ padding: '3rem 2rem 5rem' }}>
         <div className="glass-panel glow-border text-center p-5 animate-fade-in" style={{ borderRadius: 'var(--radius-xl)' }}>
           <h2 style={{ marginBottom: '1rem' }}>Want to be Part of the <span className="gradient-text">Story</span>?</h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '450px', margin: '0 auto 2rem' }}>Join IIC at GTBIT and leave your mark on the innovation landscape.</p>
+          <p style={{ color: 'var(--text-secondary)', maxWidth: '450px', margin: '0 auto 2rem' }}>Join Innovahub(IH) at GTBIT and leave your mark on the innovation landscape.</p>
           <a href="https://forms.gle/uMpubandEjjDhbLH8" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '1rem 2.5rem', borderRadius: '50px', fontSize: '1.05rem' }}>
-            <i className="fas fa-rocket me-2"></i> Join IIC Now
+            <i className="fas fa-rocket me-2"></i> Join Innovahub(IH) Now
           </a>
         </div>
       </section>

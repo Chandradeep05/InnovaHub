@@ -175,8 +175,8 @@ CREATE TABLE site_settings (
 
 -- Insert Default Settings
 INSERT INTO site_settings (id, college_name, iic_email, iic_phone, address) 
-VALUES (1, 'Your College Name', 'iic@college.edu.in', '+91-XXXXXXXXXX', 'Innovation Cell Office, Room 101, College Campus');
+VALUES (1, 'Your College Name', 'innovahub@college.edu.in', '+91-XXXXXXXXXX', 'Innovation Cell Office, Room 101, College Campus');
 
 -- Default Admin (Password is "admin123" encrypted with bcrypt)
 INSERT INTO admins (email, password_hash, name) 
-VALUES ('admin@iic.com', '$2b$10$O03VlC/RAsvKjN2a/YjX5uPTrRMgPjVX/EogjNTrb25N1oH5e8uG.', 'Super Admin');
+VALUES ('admin@innovahub.com', '$2b$10$O03VlC/RAsvKjN2a/YjX5uPTrRMgPjVX/EogjNTrb25N1oH5e8uG.', 'Super Admin');

@@ -45,7 +45,7 @@ app.get('/ping', (req, res) => {
 
 // ── Health Check ─────────────────────────────────
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'IIC Backend is running!', timestamp: new Date().toISOString() });
+  res.json({ status: 'ok', message: 'Innovahub(IH) Backend is running!', timestamp: new Date().toISOString() });
 });
 
 // ── API Routes ───────────────────────────────────
@@ -132,10 +132,10 @@ app.use(errorHandler);
 // ── Start Server ─────────────────────────────────
 app.listen(config.port, () => {
   console.log(`
-  ╔════════════════════════════════════════╗
-  ║   🚀 IIC Backend Server Running       ║
-  ║   Port: ${config.port}                          ║
-  ║   Mode: ${process.env.NODE_ENV || 'development'}                  ║
-  ╚════════════════════════════════════════╝
+  ╔══════════════════════════════════════════╗
+  ║   🚀 Innovahub(IH) Backend Running       ║
+  ║   Port: ${config.port}                            ║
+  ║   Mode: ${process.env.NODE_ENV || 'development'}                    ║
+  ╚══════════════════════════════════════════╝
   `);
 });

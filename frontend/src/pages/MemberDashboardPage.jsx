@@ -81,10 +81,10 @@ const MemberDashboardPage = () => {
             👤 Member Portal
           </span>
           <h1 className="animate-fade-in stagger-1" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, marginBottom: '1rem' }}>
-            Your <span className="gradient-text">IIC Journey</span>
+            Your <span className="gradient-text">Innovahub(IH) Journey</span>
           </h1>
           <p className="animate-fade-in stagger-2" style={{ color: 'var(--text-secondary)', maxWidth: '550px', margin: '0 auto 2rem', fontSize: '1.1rem' }}>
-            Track your event participation, contributions, and IIC connection history.
+            Track your event participation, contributions, and Innovahub(IH) connection history.
           </p>
 
           {/* Search Form */}
@@ -214,7 +214,7 @@ const MemberDashboardPage = () => {
             <div style={{ fontSize: '4rem', marginBottom: '1rem', animation: 'floatUp 4s ease-in-out infinite' }}>🔍</div>
             <h3>Enter your email to get started</h3>
             <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
-              We'll pull up your full IIC journey — events attended, ideas pitched, and your membership timeline.
+              We'll pull up your full Innovahub(IH) journey — events attended, ideas pitched, and your membership timeline.
             </p>
           </div>
         </section>

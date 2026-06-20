@@ -32,7 +32,7 @@ const AdminGalleryPage = () => {
       setPhotos([
         { id: 1, title: 'Hackathon Winners 2024', category: 'event', event_name: 'HackAI 24', year: 2024, image_url: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
         { id: 2, title: 'Ideation Workshop Pitch', category: 'workshop', event_name: 'StartUp 101', year: 2024, image_url: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
-        { id: 3, title: 'Lab Inauguration', category: 'ceremony', event_name: 'IIC Hub Launch', year: 2023, image_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
+        { id: 3, title: 'Lab Inauguration', category: 'ceremony', event_name: 'Innovahub(IH) Hub Launch', year: 2023, image_url: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60' },
       ]);
       setError('Simulating data: Backend unreachable'); 
     } finally { 

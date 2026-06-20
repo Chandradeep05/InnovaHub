@@ -6,9 +6,9 @@ const Footer = () => {
     <footer className="footer glass-panel">
       <div className="container footer-content">
         <div className="footer-section">
-          <h3>IIC Innovation Cell</h3>
+          <h3>Innovahub(IH) Innovation Cell</h3>
           <p>📍 Room 101, College Campus</p>
-          <p>📧 <a href="mailto:iic@college.edu.in">iic@college.edu.in</a></p>
+          <p>📧 <a href="mailto:innovahub@college.edu.in">innovahub@college.edu.in</a></p>
           <p>📞 <a href="tel:+919876543210">+91-9876543210</a></p>
           <p>🕐 Mon-Fri, 9 AM - 5 PM</p>
         </div>
@@ -29,7 +29,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Institution's Innovation Council. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Innovahub(IH) Innovation Council. All rights reserved.</p>
       </div>
     </footer>
   );

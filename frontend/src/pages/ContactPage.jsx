@@ -13,9 +13,9 @@ const ContactPage = () => {
   const [activeFaq, setActiveFaq] = useState(null);
 
   const faqs = [
-    { id: 1, question: "How can I register for an IIC event?", answer: "Hop over to our Events page! Simply click 'Register Now' on the event card, fill out the details, and you're in. We'll send a confirmation email straight to your inbox." },
+    { id: 1, question: "How can I register for an Innovahub(IH) event?", answer: "Hop over to our Events page! Simply click 'Register Now' on the event card, fill out the details, and you're in. We'll send a confirmation email straight to your inbox." },
     { id: 2, question: "Who can submit an idea to the Innovation Hub?", answer: "Got an idea? Any enrolled student can pitch it! Team up with friends or go solo. We love seeing wild, out-of-the-box, multi-disciplinary concepts." },
-    { id: 3, question: "Are there any hidden fees to join?", answer: "Absolutely not. Joining the IIC is 100% free. We're looking for passion, creativity, and the drive to make a difference." },
+    { id: 3, question: "Are there any hidden fees to join?", answer: "Absolutely not. Joining Innovahub(IH) is 100% free. We're looking for passion, creativity, and the drive to make a difference." },
     { id: 4, question: "Can alumni jump in on the fun?", answer: "Always! We love when alumni return to mentor, judge, or speak. Come back and share your wisdom with the next generation of innovators." }
   ];
 
@@ -46,7 +46,7 @@ const ContactPage = () => {
       });
 
       if (response.ok || response.status === 404) {
-        const trackingId = `IIC-REQ-${Math.floor(Math.random() * 90000) + 10000}`;
+        const trackingId = `IH-REQ-${Math.floor(Math.random() * 90000) + 10000}`;
         setStatus({ type: 'success', message: `High five! Your message is sent. Tracking ID: ${trackingId}.` });
         setFormData({ name: '', email: '', subject: '', message: '' });
         setAttachment(null);
@@ -56,7 +56,7 @@ const ContactPage = () => {
       }
     } catch (error) {
       // Simulated success for frontend demo
-      const trackingId = `IIC-REQ-${Math.floor(Math.random() * 90000) + 10000}`;
+      const trackingId = `IH-REQ-${Math.floor(Math.random() * 90000) + 10000}`;
       setStatus({ type: 'success', message: `Message sent! Tracking ID: ${trackingId}` });
       setFormData({ name: '', email: '', subject: '', message: '' });
       setAttachment(null);
@@ -87,7 +87,7 @@ const ContactPage = () => {
             <div className="d-flex flex-column gap-4">
               
               {[
-                { icon: 'fa-paper-plane', title: 'Drop a Line', detail: 'iic@college.edu.in', color: 'var(--accent-primary)' },
+                { icon: 'fa-paper-plane', title: 'Drop a Line', detail: 'innovahub@college.edu.in', color: 'var(--accent-primary)' },
                 { icon: 'fa-map-marked-alt', title: 'Visit the Hub', detail: 'Innovation Block, Room 402', color: 'var(--success)' },
                 { icon: 'fa-coffee', title: "Let's Chat", detail: '+91 98765 43210 (Mon-Fri)', color: 'var(--warning)' },
               ].map((card, i) => (

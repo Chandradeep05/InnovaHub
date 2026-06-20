@@ -10,13 +10,13 @@ async function reset() {
     const { data, error } = await supabase
       .from('admins')
       .update({ password_hash: hash })
-      .eq('email', 'admin@iic.com')
+      .eq('email', 'admin@innovahub.com')
       .select();
       
     if (error) {
       console.error('Error updating password:', error);
     } else {
-      console.log('Password successfully reset for admin@iic.com! You can now login with "admin123"');
+      console.log('Password successfully reset for admin@innovahub.com! You can now login with "admin123"');
     }
   } catch (err) {
     console.error('Error:', err);

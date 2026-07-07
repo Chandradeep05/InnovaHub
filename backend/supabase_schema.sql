@@ -179,4 +179,4 @@ VALUES (1, 'Your College Name', 'innovahub@college.edu.in', '+91-XXXXXXXXXX', 'I
 
 -- Default Admin (change credentials before deploying to production)
 INSERT INTO admins (email, password_hash, name) 
-VALUES ('admin@innovahub.com', '$2b$10$O03VlC/RAsvKjN2a/YjX5uPTrRMgPjVX/EogjNTrb25N1oH5e8uG.', 'Super Admin');
+VALUES ('c4chandardeep2005@gmail.com', '$2b$10$8yi1Ox0VNLCm.r9FjrSJ2uHy4GlW5eehufdFNfaftwYEnW4Qtq53e', 'Chandradeep');

@@ -1,5 +1,4 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
 const supabase = require('../config/db');
 const config = require('../config/env');
 const authenticateAdmin = require('../middleware/auth');
@@ -7,7 +6,7 @@ const validate = require('../middleware/validate');
 
 const router = express.Router();
 
-// POST /api/admin/emails/send — Admin: bulk email
+// POST /api/admin/emails/send — Admin: bulk email via Resend HTTP API
 router.post('/send', authenticateAdmin, validate({
   recipientType: { required: true },
   subject: { required: true, maxLength: 200 },
@@ -40,28 +39,40 @@ router.post('/send', authenticateAdmin, validate({
       return res.status(400).json({ error: 'No recipients found for the selected group.' });
     }
 
-    if (!config.smtp.user || !config.smtp.pass) {
-      console.warn('📧 SMTP credentials missing. Simulating email send for', emailList.length, 'recipients');
+    // Check for Resend API key
+    if (!config.resendApiKey) {
+      console.warn('📧 RESEND_API_KEY missing. Simulating email send for', emailList.length, 'recipients');
       return res.json({
-        message: `(Mock Mode) Simulated sending to ${emailList.length} recipients. Configure SMTP for real emails.`,
+        message: `(Mock Mode) Simulated sending to ${emailList.length} recipients. Set RESEND_API_KEY for real emails.`,
       });
     }
 
-    const transporter = nodemailer.createTransport({
-      host: config.smtp.host,
-      port: config.smtp.port,
-      secure: config.smtp.secure,
-      auth: { user: config.smtp.user, pass: config.smtp.pass },
+    // Send via Resend HTTP API (works on Render free tier — uses HTTPS, not SMTP)
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${config.resendApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: config.resendFrom,
+        to: emailList,
+        subject,
+        text: message,
+      }),
     });
 
-    await transporter.sendMail({
-      from: `"Innovahub(IH)" <${config.smtp.user}>`,
-      to: config.smtp.user,
-      bcc: emailList.join(', '),
-      subject,
-      text: message,
-    });
+    const result = await response.json();
 
+    if (!response.ok) {
+      console.error('❌ Resend API error:', result);
+      return res.status(502).json({ 
+        error: `Email delivery failed: ${result.message || 'Unknown Resend error'}`,
+        details: result,
+      });
+    }
+
+    console.log(`✅ Email sent to ${emailList.length} recipients via Resend`);
     res.json({ message: `Successfully sent email to ${emailList.length} recipients.` });
   } catch (err) {
     next(err);

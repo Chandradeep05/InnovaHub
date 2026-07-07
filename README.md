@@ -120,7 +120,7 @@ graph TD
 | **Server** | **Node.js + Express 5** | RESTful API server handling core operations |
 | **Database** | **Supabase (PostgreSQL)** | Persistent storage, relation tables, default seed data |
 | **Auth** | **JWT & Bcrypt** | Secure password hashing & stateless session management |
-| **Mailing** | **Nodemailer** | System notification pings and announcements |
+| **Mailing** | **Resend** | Email delivery via HTTP API (works on free hosting) |
 | **Hosting** | **Render & Vercel** | Multi-service cloud deployments |
 
 ---
@@ -138,10 +138,8 @@ Create a `.env` file in the `backend/` directory based on the variables below:
 | `SUPABASE_KEY` | Anonymous/Service key from API keys | `your-supabase-anon-key` |
 | `JWT_SECRET` | Secret token for signing JWT sessions | `generate-a-strong-random-string` |
 | `FRONTEND_URL` | Allowed origin for CORS handshakes | `http://localhost:5173` |
-| `SMTP_HOST` | *(Optional)* SMTP host for mailing | `smtp.gmail.com` |
-| `SMTP_PORT` | *(Optional)* Port used by SMTP server | `465` |
-| `SMTP_USER` | *(Optional)* Authenticated email user | `your-email@gmail.com` |
-| `SMTP_PASS` | *(Optional)* Email App Password | `your-app-password` |
+| `RESEND_API_KEY` | API key from [resend.com](https://resend.com) | `re_your_api_key` |
+| `RESEND_FROM` | *(Optional)* Sender address | `Innovahub(IH) <onboarding@resend.dev>` |
 
 ### Frontend Setup (`frontend/.env`)
 Create a `.env` file in the `frontend/` directory:

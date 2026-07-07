@@ -230,8 +230,8 @@ a:hover {
 
 .glass-card:hover {
   border-color: rgba(45, 212, 191, 0.2) !important;
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg), 0 0 30px rgba(45, 212, 191, 0.08);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md), 0 0 20px rgba(45, 212, 191, 0.06);
 }
 
 /* ============================================
@@ -241,9 +241,11 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.75rem;
+  padding: 0.6rem 1.4rem;
   font-weight: 600;
-  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  border-radius: 12px;
   cursor: pointer;
   transition: var(--transition-bounce);
   border: none;
@@ -251,7 +253,6 @@ a:hover {
   gap: 0.5rem;
   position: relative;
   overflow: hidden;
-  letter-spacing: 0.01em;
 }
 
 .btn::before {
@@ -277,8 +278,8 @@ a:hover {
 
 .btn-primary:hover {
   background: linear-gradient(135deg, #2dd4bf, #14b8a6);
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 8px 30px rgba(45, 212, 191, 0.45), var(--shadow-glow);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(45, 212, 191, 0.3), 0 0 15px rgba(45, 212, 191, 0.15);
   color: #fff;
 }
 
@@ -291,7 +292,7 @@ a:hover {
 .btn-secondary:hover {
   border-color: var(--accent-hover);
   color: var(--accent-hover);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   background: rgba(45, 212, 191, 0.08);
 }
 
@@ -319,6 +320,33 @@ a:hover {
   color: var(--accent-hover);
 }
 
+.btn-glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(45, 212, 191, 0.3);
+  color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(45, 212, 191, 0.1);
+}
+
+.btn-sm {
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  border-radius: 10px;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.8rem;
+  font-size: 0.95rem;
+}
+
 /* ============================================
    📐 LAYOUT UTILITIES
    ============================================ */
@@ -338,7 +366,7 @@ a:hover {
 }
 
 .section-header h2 {
-  font-size: 2.8rem;
+  font-size: 2.2rem;
   font-weight: 800;
   background: linear-gradient(135deg, #f1f5f9, var(--accent-hover));
   -webkit-background-clip: text;
@@ -380,15 +408,15 @@ input[type="date"],
 textarea,
 select {
   width: 100%;
-  padding: 0.9rem 1.3rem;
+  padding: 0.75rem 1.1rem;
   background: rgba(15, 20, 35, 0.7) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: var(--radius-md) !important;
+  border-radius: 10px !important;
   color: var(--text-primary) !important;
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 400;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
@@ -675,10 +703,10 @@ select:disabled,
    ============================================ */
 .badge {
   display: inline-block;
-  padding: 0.3rem 0.85rem;
-  font-size: 0.78rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  border-radius: 9999px;
+  border-radius: 20px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }

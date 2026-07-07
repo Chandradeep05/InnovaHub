@@ -5,6 +5,64 @@ import './EventsPage.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+const SAMPLE_EVENTS = [
+  {
+    id: 'sample-1',
+    title: 'Xenothon 2026 — National Level Hackathon',
+    description: 'A 36-hour hackathon where 500+ participants build innovative solutions for real-world challenges. Top teams win prizes worth ₹2,00,000.',
+    event_date: new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0],
+    event_time: '09:00',
+    venue: 'Main Auditorium, Block A',
+    category: 'Hackathon',
+    banner_image_url: 'https://picsum.photos/seed/hackathon/800/450',
+    registration_open: true,
+  },
+  {
+    id: 'sample-2',
+    title: 'AI/ML Workshop — Building with LLMs',
+    description: 'Hands-on workshop on building applications with Large Language Models. Learn prompt engineering, RAG pipelines, and fine-tuning.',
+    event_date: new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0],
+    event_time: '14:00',
+    venue: 'Smart Lab 204, CS Block',
+    category: 'Workshop',
+    banner_image_url: 'https://picsum.photos/seed/aiworkshop/800/450',
+    registration_open: true,
+  },
+  {
+    id: 'sample-3',
+    title: 'Startup Pitch Night — Season 3',
+    description: 'Present your startup idea to a panel of investors and industry mentors. Get feedback, funding leads, and networking opportunities.',
+    event_date: new Date(Date.now() + 21 * 86400000).toISOString().split('T')[0],
+    event_time: '17:30',
+    venue: 'Innovation Hub, Room 101',
+    category: 'Competition',
+    banner_image_url: 'https://picsum.photos/seed/pitchnight/800/450',
+    registration_open: true,
+  },
+  {
+    id: 'sample-4',
+    title: 'IoT Bootcamp — Smart Campus Edition',
+    description: 'Two-day intensive bootcamp on Internet of Things. Built smart sensors, programmed Arduino boards, and deployed real campus solutions.',
+    event_date: new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0],
+    event_time: '10:00',
+    venue: 'Electronics Lab, Block B',
+    category: 'Workshop',
+    banner_image_url: 'https://picsum.photos/seed/iotbootcamp/800/450',
+    registration_open: false,
+  },
+  {
+    id: 'sample-5',
+    title: 'Design Thinking Masterclass',
+    description: 'An immersive session on human-centered design principles. Participants learned ideation, prototyping, and user testing techniques.',
+    event_date: new Date(Date.now() - 60 * 86400000).toISOString().split('T')[0],
+    event_time: '11:00',
+    venue: 'Seminar Hall 3, Admin Block',
+    category: 'Seminar',
+    banner_image_url: 'https://picsum.photos/seed/designthinking/800/450',
+    registration_open: false,
+  },
+];
+
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -201,14 +259,14 @@ const EventsPage = () => {
 
         {!loading && !error && activeTab === 'upcoming' && (
           <div className="upcoming-events">
-            {upcomingEvents.length === 0 ? (
+            {(upcomingEvents.length === 0 ? SAMPLE_EVENTS.filter(e => new Date(e.event_date) >= todayDate) : upcomingEvents).length === 0 ? (
               <div className="glass-panel text-center p-5">
                 <i className="far fa-calendar-times fs-1 text-secondary mb-3"></i>
                 <p>No upcoming events at this time. Check back later!</p>
               </div>
             ) : (
               <div className="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
-                {upcomingEvents.map(event => (
+                {(upcomingEvents.length > 0 ? upcomingEvents : SAMPLE_EVENTS.filter(e => new Date(e.event_date) >= todayDate)).map(event => (
                   <EventCard key={event.id} event={event} />
                 ))}
               </div>
@@ -267,7 +325,28 @@ const EventsPage = () => {
               </div>
             </div>
 
-            {paginatedPastEvents.length === 0 ? (
+            {(paginatedPastEvents.length === 0 && allPastEvents.length === 0) ? (
+              <>
+                <div className="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
+                  {SAMPLE_EVENTS.filter(e => new Date(e.event_date) < todayDate).map(event => (
+                    <div key={event.id} className="card glass-card past-event-card">
+                      <img src={event.banner_image_url || 'https://via.placeholder.com/800x450?text=Past+Event'} alt={event.title} style={{ width: '100%', height: '160px', objectFit: 'cover' }} />
+                      <div className="p-3">
+                        <span className="badge bg-secondary mb-2">{new Date(event.event_date).getFullYear()} | {event.category}</span>
+                        <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>{event.title}</h4>
+                        <p className="text-secondary small mb-3">
+                          <i className="far fa-calendar-alt me-1"></i> {new Date(event.event_date).toLocaleDateString('en-GB')}
+                        </p>
+                        <div className="d-flex justify-content-between">
+                          <button className="btn btn-sm btn-outline-primary">View Report</button>
+                          <button className="btn btn-sm btn-outline-secondary">Photos</button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : paginatedPastEvents.length === 0 ? (
               <div className="text-center py-5 text-secondary">No past events match your filters.</div>
             ) : (
               <>

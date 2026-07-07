@@ -10,7 +10,7 @@ const EventCard = ({ event }) => {
   return (
     <div className="card glass-card" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
       {/* Image */}
-      <div style={{ position: 'relative', height: '200px', width: '100%', overflow: 'hidden' }}>
+      <div style={{ position: 'relative', height: '180px', width: '100%', overflow: 'hidden' }}>
         <img 
           src={event.banner_image_url || 'https://via.placeholder.com/800x450?text=Event+Banner'} 
           alt={event.title} 
@@ -32,7 +32,7 @@ const EventCard = ({ event }) => {
       </div>
       
       {/* Content */}
-      <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+      <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
         <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', lineHeight: '1.4', fontWeight: 700 }}>{event.title}</h3>
         
         <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -52,11 +52,11 @@ const EventCard = ({ event }) => {
         
         <div style={{ marginTop: 'auto' }}>
           {event.registration_open ? (
-            <button className="btn btn-primary w-100" onClick={() => window.location.href=`/events?register=${event.id}`} style={{ borderRadius: '12px' }}>
+            <button className="btn btn-primary w-100" onClick={() => window.location.href=`/events?register=${event.id}`} style={{ borderRadius: '10px' }}>
               Register Now <i className="fas fa-arrow-right ms-2"></i>
             </button>
           ) : (
-            <button className="btn w-100" disabled style={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'var(--text-secondary)', cursor: 'not-allowed', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <button className="btn w-100" disabled style={{ backgroundColor: 'rgba(255,255,255,0.05)', color: 'var(--text-secondary)', cursor: 'not-allowed', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.06)' }}>
               Registration Closed
             </button>
           )}

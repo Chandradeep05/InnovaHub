@@ -3,6 +3,33 @@ import './InnovationHubPage.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+const SAMPLE_PROJECTS = [
+  {
+    id: 'sample-proj-1',
+    title: 'EcoTrack — Carbon Footprint Analyzer',
+    description: 'An IoT-based system that monitors and analyzes personal and institutional carbon footprints in real-time. Uses smart sensors across campus to track energy usage, waste, and transportation patterns, providing actionable sustainability insights.',
+    category: 'Sustainability & Environment',
+    student_name: 'Arjun Mehta',
+    status: 'Approved',
+  },
+  {
+    id: 'sample-proj-2',
+    title: 'MediScan — AI Health Diagnostics',
+    description: 'An AI-powered mobile application that performs preliminary health diagnostics from medical imaging. Uses deep learning models trained on X-ray and dermatology datasets to assist healthcare workers in underserved areas.',
+    category: 'Healthcare & BioTech',
+    student_name: 'Priya Sharma',
+    status: 'Approved',
+  },
+  {
+    id: 'sample-proj-3',
+    title: 'CampusConnect — Smart Navigation App',
+    description: 'A mobile-first campus navigation and scheduling app with indoor mapping, real-time class schedules, and social features. Helps new students find classrooms, labs, and events with AR-guided wayfinding.',
+    category: 'EdTech',
+    student_name: 'Rohan Gupta',
+    status: 'Approved',
+  },
+];
+
 const InnovationHubPage = () => {
   const [activeTab, setActiveTab] = useState('submit'); // submit, projects, resources
   
@@ -213,11 +240,27 @@ const InnovationHubPage = () => {
 
             {projectsLoading ? (
               <div className="text-center py-5"><div className="spinner-border text-primary"></div><p className="mt-3">Loading projects...</p></div>
+            ) : (filteredProjects.length === 0 && projects.length === 0) ? (
+              <div className="grid project-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
+                {SAMPLE_PROJECTS.map(project => (
+                  <div key={project.id} className="project-card glass-card p-4">
+                    <span className="badge bg-primary mb-3">{project.category}</span>
+                    <h4 className="mb-2">{project.title}</h4>
+                    <p className="text-primary small mb-3"><i className="fas fa-users me-1"></i> Team lead: {project.student_name}</p>
+                    <p className="text-secondary mb-4" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {project.description}
+                    </p>
+                    <div className="mt-auto d-flex justify-content-between align-items-center">
+                      <span className="badge bg-success-subtle text-success border border-success px-2 py-1"><i className="fas fa-check-circle me-1"></i>In Progress</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : filteredProjects.length === 0 ? (
               <div className="glass-panel text-center p-5">
                 <i className="fas fa-rocket fs-1 text-secondary mb-3"></i>
                 <h4>No projects found</h4>
-                <p className="text-secondary">Be the first to get your idea approved!</p>
+                <p className="text-secondary">No projects match the selected category filter.</p>
               </div>
             ) : (
               <div className="grid project-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>

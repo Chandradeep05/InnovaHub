@@ -4,6 +4,42 @@ import EventCard from '../components/ui/EventCard';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+const SAMPLE_EVENTS = [
+  {
+    id: 'sample-1',
+    title: 'Xenothon 2026 — National Level Hackathon',
+    description: 'A 36-hour hackathon where 500+ participants build innovative solutions for real-world challenges. Top teams win prizes worth ₹2,00,000.',
+    event_date: new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0],
+    event_time: '09:00',
+    venue: 'Main Auditorium, Block A',
+    category: 'Hackathon',
+    banner_image_url: 'https://picsum.photos/seed/hackathon/800/450',
+    registration_open: true,
+  },
+  {
+    id: 'sample-2',
+    title: 'AI/ML Workshop — Building with LLMs',
+    description: 'Hands-on workshop on building applications with Large Language Models. Learn prompt engineering, RAG pipelines, and fine-tuning.',
+    event_date: new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0],
+    event_time: '14:00',
+    venue: 'Smart Lab 204, CS Block',
+    category: 'Workshop',
+    banner_image_url: 'https://picsum.photos/seed/aiworkshop/800/450',
+    registration_open: true,
+  },
+  {
+    id: 'sample-3',
+    title: 'Startup Pitch Night — Season 3',
+    description: 'Present your startup idea to a panel of investors and industry mentors. Get feedback, funding leads, and networking opportunities.',
+    event_date: new Date(Date.now() + 21 * 86400000).toISOString().split('T')[0],
+    event_time: '17:30',
+    venue: 'Innovation Hub, Room 101',
+    category: 'Competition',
+    banner_image_url: 'https://picsum.photos/seed/pitchnight/800/450',
+    registration_open: true,
+  },
+];
+
 const HomePage = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -83,10 +119,10 @@ const HomePage = () => {
           </p>
           
           <div className="animate-fade-in stagger-3" style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/innovation-hub" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.05rem', borderRadius: '50px' }}>
+            <Link to="/innovation-hub" className="btn btn-primary" style={{ padding: '0.75rem 2rem', fontSize: '0.95rem', borderRadius: '50px' }}>
               <i className="fas fa-lightbulb me-2"></i> Submit an Idea
             </Link>
-            <Link to="/events" className="btn btn-secondary" style={{ padding: '1rem 2.5rem', fontSize: '1.05rem', borderRadius: '50px' }}>
+            <Link to="/events" className="btn btn-secondary" style={{ padding: '0.75rem 2rem', fontSize: '0.95rem', borderRadius: '50px' }}>
               <i className="fas fa-calendar-alt me-2"></i> Upcoming Events
             </Link>
           </div>
@@ -148,11 +184,11 @@ const HomePage = () => {
               </div>
             ))
           ) : (
-            <div className="glass-panel text-center p-5" style={{ gridColumn: '1 / -1' }}>
-              <div style={{ fontSize: '4rem', marginBottom: '1rem', opacity: 0.3 }}>📅</div>
-              <h3>No Upcoming Events</h3>
-              <p style={{ color: 'var(--text-secondary)' }}>We are planning new and exciting events. Check back soon!</p>
-            </div>
+            SAMPLE_EVENTS.map((event, i) => (
+              <div key={event.id} className={`animate-slide-in stagger-${i + 1}`}>
+                <EventCard event={event} />
+              </div>
+            ))
           )}
         </div>
         <div className="text-center mt-4 d-md-none">
@@ -196,10 +232,10 @@ const HomePage = () => {
             Take the first step. Join India's most vibrant campus innovation community.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', position: 'relative' }}>
-            <a href="https://forms.gle/uMpubandEjjDhbLH8" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.05rem', borderRadius: '50px' }}>
+            <a href="https://forms.gle/uMpubandEjjDhbLH8" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '0.75rem 2rem', fontSize: '0.95rem', borderRadius: '50px' }}>
               <i className="fas fa-rocket me-2"></i> Join Innovahub(IH) Now
             </a>
-            <Link to="/contact" className="btn btn-secondary" style={{ padding: '1rem 2.5rem', fontSize: '1.05rem', borderRadius: '50px' }}>
+            <Link to="/contact" className="btn btn-secondary" style={{ padding: '0.75rem 2rem', fontSize: '0.95rem', borderRadius: '50px' }}>
               <i className="fas fa-envelope me-2"></i> Get in Touch
             </Link>
           </div>

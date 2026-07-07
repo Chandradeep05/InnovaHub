@@ -62,6 +62,14 @@
   gap: 1rem;
 }
 
+/* Refined CTA button — smaller & more elegant */
+.navbar .btn.btn-primary {
+  padding: 0.45rem 1.1rem;
+  font-size: 0.82rem;
+  border-radius: 10px;
+  letter-spacing: 0.02em;
+}
+
 .nav-link {
   color: var(--text-secondary);
   font-weight: 500;

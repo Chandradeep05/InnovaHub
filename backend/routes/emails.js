@@ -6,13 +6,13 @@ const validate = require('../middleware/validate');
 
 const router = express.Router();
 
-// POST /api/admin/emails/send — Admin: bulk email via Resend HTTP API
+// POST /api/admin/emails/send — Admin: bulk email via Brevo HTTP API
 router.post('/send', authenticateAdmin, validate({
   recipientType: { required: true },
   subject: { required: true, maxLength: 200 },
   message: { required: true },
 }), async (req, res, next) => {
-  const { recipientType, customEmails, subject, message } = req.body;
+  const { recipientType, customEmails, subject, message, attachment } = req.body;
 
   try {
     let emailList = [];
@@ -39,40 +39,55 @@ router.post('/send', authenticateAdmin, validate({
       return res.status(400).json({ error: 'No recipients found for the selected group.' });
     }
 
-    // Check for Resend API key
-    if (!config.resendApiKey) {
-      console.warn('📧 RESEND_API_KEY missing. Simulating email send for', emailList.length, 'recipients');
+    // Check for Brevo API key
+    if (!config.brevoApiKey) {
+      console.warn('📧 BREVO_API_KEY missing. Simulating email send for', emailList.length, 'recipients');
       return res.json({
-        message: `(Mock Mode) Simulated sending to ${emailList.length} recipients. Set RESEND_API_KEY for real emails.`,
+        message: `(Mock Mode) Simulated sending to ${emailList.length} recipients. Set BREVO_API_KEY for real emails.`,
       });
     }
 
-    // Send via Resend HTTP API (works on Render free tier — uses HTTPS, not SMTP)
-    const response = await fetch('https://api.resend.com/emails', {
+    // Build Brevo API request body
+    const brevoPayload = {
+      sender: {
+        name: config.brevoFromName,
+        email: config.brevoFromEmail,
+      },
+      to: emailList.map(email => ({ email })),
+      subject,
+      textContent: message,
+    };
+
+    // Add attachment if provided (base64 encoded)
+    if (attachment && attachment.content && attachment.name) {
+      brevoPayload.attachment = [{
+        content: attachment.content,
+        name: attachment.name,
+      }];
+    }
+
+    // Send via Brevo HTTP API (uses HTTPS port 443 — works on Render free tier)
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${config.resendApiKey}`,
+        'api-key': config.brevoApiKey,
         'Content-Type': 'application/json',
+        'accept': 'application/json',
       },
-      body: JSON.stringify({
-        from: config.resendFrom,
-        to: emailList,
-        subject,
-        text: message,
-      }),
+      body: JSON.stringify(brevoPayload),
     });
 
     const result = await response.json();
 
     if (!response.ok) {
-      console.error('❌ Resend API error:', result);
-      return res.status(502).json({ 
-        error: `Email delivery failed: ${result.message || 'Unknown Resend error'}`,
+      console.error('❌ Brevo API error:', result);
+      return res.status(502).json({
+        error: `Email delivery failed: ${result.message || 'Unknown Brevo error'}`,
         details: result,
       });
     }
 
-    console.log(`✅ Email sent to ${emailList.length} recipients via Resend`);
+    console.log(`✅ Email sent to ${emailList.length} recipients via Brevo`);
     res.json({ message: `Successfully sent email to ${emailList.length} recipients.` });
   } catch (err) {
     next(err);

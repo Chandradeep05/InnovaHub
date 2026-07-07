@@ -7,6 +7,7 @@ module.exports = {
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
   supabaseUrl: process.env.SUPABASE_URL,
   supabaseKey: process.env.SUPABASE_KEY,
-  resendApiKey: process.env.RESEND_API_KEY,
-  resendFrom: process.env.RESEND_FROM || 'Innovahub(IH) <onboarding@resend.dev>',
+  brevoApiKey: process.env.BREVO_API_KEY,
+  brevoFromName: process.env.BREVO_FROM_NAME || 'Innovahub(IH)',
+  brevoFromEmail: process.env.BREVO_FROM_EMAIL || process.env.SMTP_USER || 'noreply@innovahub.com',
 };

@@ -177,6 +177,6 @@ CREATE TABLE site_settings (
 INSERT INTO site_settings (id, college_name, iic_email, iic_phone, address) 
 VALUES (1, 'Your College Name', 'innovahub@college.edu.in', '+91-XXXXXXXXXX', 'Innovation Cell Office, Room 101, College Campus');
 
--- Default Admin (Password is "admin123" encrypted with bcrypt)
+-- Default Admin (change credentials before deploying to production)
 INSERT INTO admins (email, password_hash, name) 
 VALUES ('admin@innovahub.com', '$2b$10$O03VlC/RAsvKjN2a/YjX5uPTrRMgPjVX/EogjNTrb25N1oH5e8uG.', 'Super Admin');

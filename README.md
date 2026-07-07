@@ -11,6 +11,12 @@
   <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
 </p>
 
+<p align="center">
+  <a href="https://iic-website-amber.vercel.app/"><img src="https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-blueviolet?style=for-the-badge" alt="Live Demo" /></a>
+  &nbsp;
+  <a href="https://innovahub.onrender.com"><img src="https://img.shields.io/badge/⚙️_API-Render_Backend-00C7B7?style=for-the-badge" alt="Backend API" /></a>
+</p>
+
 ---
 
 ## 🔮 Overview
@@ -192,30 +198,32 @@ npm run dev
 
 ---
 
-## 🔐 Local Seeding & Security Advisory
+## 🔐 Security Advisory
 
-> [!WARNING]
-> **Production Security Warning:** The database setup script (`supabase_schema.sql`) seeds a default administrator account for **local development and testing only**.
-> * **Local Testing Email:** `admin@innovahub.com`
-> * **Local Testing Password:** `admin123`
+> [!CAUTION]
+> The database setup script ([supabase_schema.sql](./backend/supabase_schema.sql)) seeds a **default administrator account** intended for local development only.
+> **You MUST change the default admin credentials** before deploying to production.
 >
-> You **MUST** change these default credentials or remove the seeded record from the `admins` table before deploying the application to a production environment. To modify the default administrator, update the insert statement at the bottom of [supabase_schema.sql](./backend/supabase_schema.sql) or execute an `UPDATE` SQL query in your Supabase SQL Editor.
+> To update them, modify the `INSERT INTO admins` statement at the bottom of the schema file, or run an `UPDATE` query directly in your Supabase SQL Editor.
 
 ---
 
 ## 📦 Deployment
 
-### Backend (Render Setup)
+### Backend — [Render](https://innovahub.onrender.com)
 The project includes a [render.yaml](./render.yaml) configuration to automate deployment.
 1. Connect your GitHub repository to Render.
 2. Choose **Blueprint** and import from the repository.
-3. Fill in the required Environment Variables (`SUPABASE_URL`, `SUPABASE_KEY`, `FRONTEND_URL`) inside the Render dashboard.
+3. Fill in the required Environment Variables in the Render dashboard:
+   - `SUPABASE_URL` — Your Supabase project endpoint
+   - `SUPABASE_KEY` — Your Supabase anon key
+   - `FRONTEND_URL` — `https://iic-website-amber.vercel.app`
 
-### Frontend (Vercel Setup)
+### Frontend — [Vercel](https://iic-website-amber.vercel.app/)
 The frontend contains [vercel.json](./frontend/vercel.json) to handle React SPA routing.
 1. Import the repository's `frontend` folder into Vercel.
 2. In Build & Development Settings, verify the root directory is set to `frontend`.
-3. Set the environment variable: `VITE_API_URL` pointing to your deployed Render URL.
+3. Set the environment variable: `VITE_API_URL` → `https://innovahub.onrender.com`
 4. Deploy the application.
 
 ---

@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: iic-backend
+    name: innovahub-backend
     runtime: node
     region: oregon
     rootDir: backend

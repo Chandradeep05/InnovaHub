@@ -8,7 +8,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS doc_workspaces (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(200) NOT NULL,
-    created_by UUID REFERENCES admins(id),
+    created_by UUID,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -77,6 +77,9 @@ CREATE TABLE IF NOT EXISTS doc_recipients (
 CREATE TABLE IF NOT EXISTS doc_email_logs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     recipient_id UUID NOT NULL REFERENCES doc_recipients(id) ON DELETE CASCADE,
+    campaign_id UUID REFERENCES doc_campaigns(id) ON DELETE CASCADE,
+    document_id VARCHAR(50),
+    email VARCHAR(255),
     provider VARCHAR(30) DEFAULT 'brevo',
     status VARCHAR(20),
     message_id VARCHAR(200),
@@ -91,3 +94,4 @@ CREATE INDEX IF NOT EXISTS idx_doc_recipients_campaign ON doc_recipients(campaig
 CREATE INDEX IF NOT EXISTS idx_doc_recipients_status ON doc_recipients(send_status);
 CREATE INDEX IF NOT EXISTS idx_doc_template_versions_template ON doc_template_versions(template_id);
 CREATE INDEX IF NOT EXISTS idx_doc_email_logs_recipient ON doc_email_logs(recipient_id);
+CREATE INDEX IF NOT EXISTS idx_doc_email_logs_campaign ON doc_email_logs(campaign_id);

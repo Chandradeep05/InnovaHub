@@ -12,6 +12,37 @@ const router = express.Router();
 // ── Apply authenticateAdmin to ALL doc engine routes ─────────────
 router.use(authenticateAdmin);
 
+// ── STALE LOCK TIMEOUT (10 minutes) ─────────────────────────────
+const STALE_LOCK_MS = 10 * 60 * 1000;
+
+/**
+ * Checks if a campaign's 'sending' status is stale (>10 min with no progress).
+ * If stale, resets to 'failed' so it can be retried.
+ */
+async function recoverStaleLock(campaignId) {
+  const { data: campaign } = await supabase
+    .from('doc_campaigns')
+    .select('status, completed_at, created_at')
+    .eq('id', campaignId)
+    .single();
+
+  if (!campaign || campaign.status !== 'sending') return false;
+
+  // Check last activity: use completed_at or fall back to created_at
+  const lastActivity = campaign.completed_at || campaign.created_at;
+  const elapsed = Date.now() - new Date(lastActivity).getTime();
+
+  if (elapsed > STALE_LOCK_MS) {
+    await supabase
+      .from('doc_campaigns')
+      .update({ status: 'failed', completed_at: new Date().toISOString() })
+      .eq('id', campaignId);
+    console.warn(`🔓 Campaign ${campaignId} stale lock recovered (stuck for ${Math.round(elapsed / 60000)}min)`);
+    return true;
+  }
+  return false;
+}
+
 // ══════════════════════════════════════════════════════════════════
 // HELPER: Fetch template background image (cached per call)
 // ══════════════════════════════════════════════════════════════════
@@ -164,9 +195,9 @@ router.get('/templates/:workspaceId', async (req, res, next) => {
 // POST /api/doc/templates — create template
 router.post('/templates', async (req, res, next) => {
   try {
-    const { workspace_id, name, document_type } = req.body;
-    if (!workspace_id || !name || !document_type) {
-      return res.status(400).json({ error: 'workspace_id, name, and document_type are required' });
+    const { workspace_id, name, document_type = 'certificate' } = req.body;
+    if (!workspace_id || !name) {
+      return res.status(400).json({ error: 'workspace_id and name are required' });
     }
 
     const { data, error } = await supabase
@@ -301,11 +332,12 @@ router.get('/campaigns/:id', async (req, res, next) => {
       return res.status(404).json({ error: 'Campaign not found' });
     }
 
-    // Fetch recipient stats
+    // Fetch full recipients for the status page
     const { data: recipients, error: recErr } = await supabase
       .from('doc_recipients')
-      .select('send_status')
-      .eq('campaign_id', req.params.id);
+      .select('id, email, merge_fields, document_id, send_status, error_message, sent_at')
+      .eq('campaign_id', req.params.id)
+      .order('created_at', { ascending: true });
 
     if (recErr) throw recErr;
 
@@ -323,7 +355,7 @@ router.get('/campaigns/:id', async (req, res, next) => {
       });
     }
 
-    res.json({ ...campaign, stats });
+    res.json({ ...campaign, recipients: recipients || [], stats });
   } catch (err) {
     next(err);
   }
@@ -403,22 +435,14 @@ router.post('/campaigns/:id/upload-csv', async (req, res, next) => {
       .delete()
       .eq('campaign_id', req.params.id);
 
-    // Build recipient rows
-    const recipientRows = rows.map((row, index) => {
-      // Build merge_fields JSONB from headers and row values
-      const mergeFields = {};
-      normalizedHeaders.forEach((header, i) => {
-        mergeFields[header] = row[i] || '';
-      });
-
-      return {
-        campaign_id: req.params.id,
-        document_id: documentIds[index],
-        email: mergeFields.email || mergeFields.e_mail || mergeFields.email_address || '',
-        merge_fields: mergeFields,
-        send_status: 'pending',
-      };
-    });
+    // Build recipient rows — parseCSV returns rows as { email, merge_fields } objects
+    const recipientRows = rows.map((row, index) => ({
+      campaign_id: req.params.id,
+      document_id: documentIds[index],
+      email: row.email || '',
+      merge_fields: row.merge_fields || {},
+      send_status: 'pending',
+    }));
 
     // Insert recipients in batches (Supabase has row limits)
     const BATCH_SIZE = 500;
@@ -439,13 +463,11 @@ router.post('/campaigns/:id/upload-csv', async (req, res, next) => {
     if (updateErr) throw updateErr;
 
     // Return preview (first 5 rows)
-    const preview = rows.slice(0, 5).map((row) => {
-      const obj = {};
-      normalizedHeaders.forEach((header, i) => {
-        obj[header] = row[i] || '';
-      });
-      return obj;
-    });
+    const preview = rows.slice(0, 5).map((row) => ({
+      email: row.email,
+      merge_fields: row.merge_fields,
+      ...row.merge_fields,
+    }));
 
     res.json({
       recipientCount: rows.length,
@@ -587,8 +609,8 @@ router.post('/campaigns/:id/preview', async (req, res, next) => {
       campaign.template_version
     );
 
-    // Render 1 document
-    const pdfBuffer = await renderDocument(layoutJson, imageBuffer, recipient.merge_fields);
+    // Render 1 document (arg order: bgImage, layout, data)
+    const pdfBuffer = await renderDocument(imageBuffer, layoutJson, recipient.merge_fields);
 
     res.json({
       pdf: pdfBuffer.toString('base64'),
@@ -644,20 +666,22 @@ router.post('/campaigns/:id/test-send', async (req, res, next) => {
       campaign.template_version
     );
 
-    // Render document
-    const pdfBuffer = await renderDocument(layoutJson, imageBuffer, recipient.merge_fields);
+    // Render document (arg order: bgImage, layout, data)
+    const pdfBuffer = await renderDocument(imageBuffer, layoutJson, recipient.merge_fields);
 
-    // Send via BrevoProvider
+    // Send via BrevoProvider (positional args: to, subject, body, buffer, filename)
     const emailProvider = new BrevoProvider();
-    await emailProvider.send({
-      to: testEmail,
-      subject: campaign.email_subject || 'Test Document',
-      html: campaign.email_body || '<p>Please find your document attached.</p>',
-      attachments: [{
-        name: `${recipient.document_id}.pdf`,
-        content: pdfBuffer.toString('base64'),
-      }],
-    });
+    const sendResult = await emailProvider.send(
+      testEmail,
+      campaign.email_subject || 'Test Document',
+      campaign.email_body || 'Please find your document attached.',
+      pdfBuffer,
+      `${recipient.document_id}.pdf`
+    );
+
+    if (!sendResult.success) {
+      return res.status(500).json({ error: `Email send failed: ${sendResult.error}` });
+    }
 
     res.json({
       success: true,
@@ -687,7 +711,11 @@ router.post('/campaigns/:id/send-all', async (req, res, next) => {
 
     // CAMPAIGN LOCKING: prevent concurrent sends
     if (campaign.status === 'sending') {
-      return res.status(409).json({ error: 'Campaign is already being sent' });
+      // Check for stale lock (>10 min) — auto-recover if stuck
+      const recovered = await recoverStaleLock(campaignId);
+      if (!recovered) {
+        return res.status(409).json({ error: 'Campaign is already being sent' });
+      }
     }
 
     // Set status to 'sending'
@@ -738,19 +766,21 @@ router.post('/campaigns/:id/send-all', async (req, res, next) => {
             batch.map((recipient) =>
               limit(async () => {
                 try {
-                  // 1. Render PDF in memory
-                  const pdfBuffer = await renderDocument(layoutJson, imageBuffer, recipient.merge_fields);
+                  // 1. Render PDF in memory (arg order: bgImage, layout, data)
+                  const pdfBuffer = await renderDocument(imageBuffer, layoutJson, recipient.merge_fields);
 
-                  // 2. Send via BrevoProvider with attachment
-                  await emailProvider.send({
-                    to: recipient.email,
-                    subject: campaign.email_subject,
-                    html: campaign.email_body || '<p>Please find your document attached.</p>',
-                    attachments: [{
-                      name: `${recipient.document_id}.pdf`,
-                      content: pdfBuffer.toString('base64'),
-                    }],
-                  });
+                  // 2. Send via BrevoProvider (positional args)
+                  const sendResult = await emailProvider.send(
+                    recipient.email,
+                    campaign.email_subject,
+                    campaign.email_body || 'Please find your document attached.',
+                    pdfBuffer,
+                    `${recipient.document_id}.pdf`
+                  );
+
+                  if (!sendResult.success) {
+                    throw new Error(sendResult.error || 'Email send failed');
+                  }
 
                   // 3. Update recipient send_status and sent_at
                   await supabase
@@ -885,8 +915,12 @@ router.post('/campaigns/:id/retry-failed', async (req, res, next) => {
       return res.status(404).json({ error: 'Campaign not found' });
     }
 
+    // IDEMPOTENCY: prevent double-retry
     if (campaign.status === 'sending') {
-      return res.status(409).json({ error: 'Campaign is currently sending' });
+      const recovered = await recoverStaleLock(campaignId);
+      if (!recovered) {
+        return res.status(409).json({ error: 'Campaign is currently sending — wait for it to finish or it will auto-recover after 10 minutes' });
+      }
     }
 
     // Reset failed recipients to 'pending'
@@ -898,7 +932,7 @@ router.post('/campaigns/:id/retry-failed', async (req, res, next) => {
 
     if (resetErr) throw resetErr;
 
-    // Set campaign status to 'sending'
+    // Set campaign status to 'sending' (lock acquired)
     await supabase
       .from('doc_campaigns')
       .update({ status: 'sending' })
@@ -942,17 +976,19 @@ router.post('/campaigns/:id/retry-failed', async (req, res, next) => {
             batch.map((recipient) =>
               limit(async () => {
                 try {
-                  const pdfBuffer = await renderDocument(layoutJson, imageBuffer, recipient.merge_fields);
+                  const pdfBuffer = await renderDocument(imageBuffer, layoutJson, recipient.merge_fields);
 
-                  await emailProvider.send({
-                    to: recipient.email,
-                    subject: campaign.email_subject,
-                    html: campaign.email_body || '<p>Please find your document attached.</p>',
-                    attachments: [{
-                      name: `${recipient.document_id}.pdf`,
-                      content: pdfBuffer.toString('base64'),
-                    }],
-                  });
+                  const sendResult = await emailProvider.send(
+                    recipient.email,
+                    campaign.email_subject,
+                    campaign.email_body || 'Please find your document attached.',
+                    pdfBuffer,
+                    `${recipient.document_id}.pdf`
+                  );
+
+                  if (!sendResult.success) {
+                    throw new Error(sendResult.error || 'Email send failed');
+                  }
 
                   await supabase
                     .from('doc_recipients')
@@ -1089,17 +1125,26 @@ router.get('/campaigns/:id/download-zip', async (req, res, next) => {
 
     archive.pipe(res);
 
-    // Render each recipient's PDF and append to archive
-    for (const recipient of recipients) {
-      try {
-        const pdfBuffer = await renderDocument(layoutJson, imageBuffer, recipient.merge_fields);
-        archive.append(pdfBuffer, { name: `${recipient.document_id}.pdf` });
-      } catch (renderErr) {
-        console.error(`Failed to render document for ${recipient.document_id}:`, renderErr);
-        // Append an error text file instead of crashing the whole ZIP
-        archive.append(`Error rendering document: ${renderErr.message}`, {
-          name: `${recipient.document_id}_ERROR.txt`,
-        });
+    // Render each recipient's PDF with concurrency control (same as send-all)
+    const BATCH_SIZE = 15;
+    for (let i = 0; i < recipients.length; i += BATCH_SIZE) {
+      const batch = recipients.slice(i, i + BATCH_SIZE);
+
+      for (const recipient of batch) {
+        try {
+          const pdfBuffer = await renderDocument(imageBuffer, layoutJson, recipient.merge_fields);
+          archive.append(pdfBuffer, { name: `${recipient.document_id}.pdf` });
+        } catch (renderErr) {
+          console.error(`Failed to render document for ${recipient.document_id}:`, renderErr);
+          archive.append(`Error rendering document: ${renderErr.message}`, {
+            name: `${recipient.document_id}_ERROR.txt`,
+          });
+        }
+      }
+
+      // Yield event loop between batches
+      if (i + BATCH_SIZE < recipients.length) {
+        await new Promise((resolve) => setImmediate(resolve));
       }
     }
 

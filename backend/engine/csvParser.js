@@ -85,8 +85,11 @@ function parseCSV(csvString) {
   const headers = rawHeaders.map((h) => h.trim());
   const normalizedHeaders = headers.map(normalizeHeader);
 
-  // Validate: email column must exist (case-insensitive)
-  const emailIndex = normalizedHeaders.indexOf('email');
+  // Validate: email column must exist — accept 'email', 'email_address', 'e_mail', or any containing 'email'
+  let emailIndex = normalizedHeaders.indexOf('email');
+  if (emailIndex === -1) emailIndex = normalizedHeaders.indexOf('email_address');
+  if (emailIndex === -1) emailIndex = normalizedHeaders.indexOf('e_mail');
+  if (emailIndex === -1) emailIndex = normalizedHeaders.findIndex(h => h.includes('email'));
   if (emailIndex === -1) {
     throw new Error(
       `Missing required "email" column. Found columns: [${headers.join(', ')}]. ` +

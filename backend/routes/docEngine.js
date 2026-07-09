@@ -334,6 +334,34 @@ router.post('/campaigns', async (req, res, next) => {
   }
 });
 
+// PUT /api/doc/campaigns/:id — update campaign details (template, email subject/body)
+router.put('/campaigns/:id', async (req, res, next) => {
+  try {
+    const { template_id, template_version, email_subject, email_body, status } = req.body;
+    const updates = {};
+    if (template_id !== undefined) updates.template_id = template_id;
+    if (template_version !== undefined) updates.template_version = template_version;
+    if (email_subject !== undefined) updates.email_subject = email_subject;
+    if (email_body !== undefined) updates.email_body = email_body;
+    if (status !== undefined) updates.status = status;
+
+    const { data, error } = await supabase
+      .from('doc_campaigns')
+      .update(updates)
+      .eq('id', req.params.id)
+      .select();
+
+    if (error) throw error;
+    if (!data || data.length === 0) {
+      return res.status(404).json({ error: 'Campaign not found' });
+    }
+    res.json(data[0]);
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 // GET /api/doc/campaigns/:id — get campaign detail + stats
 router.get('/campaigns/:id', async (req, res, next) => {
   try {

@@ -126,10 +126,14 @@ const CampaignBuilderPage = () => {
       if (!res.ok) throw new Error(data.error);
       setTemplateVersion(data.version);
       // Update campaign with template
-      await fetch(`${API_URL}/api/doc/campaigns/${campaignId}`, {
+      const campRes = await fetch(`${API_URL}/api/doc/campaigns/${campaignId}`, {
         method: 'PUT', headers,
         body: JSON.stringify({ template_id: selectedTemplate, template_version: data.version }),
-      }).catch(() => {});
+      });
+      if (!campRes.ok) {
+        const campErrData = await campRes.json().catch(() => ({}));
+        throw new Error(campErrData.error || 'Failed to update campaign template version');
+      }
       setSuccess('Template saved!');
       setTimeout(() => { setSuccess(''); setStep(2); }, 1000);
     } catch (e) { setError(e.message); }
@@ -222,9 +226,14 @@ const CampaignBuilderPage = () => {
     if (!emailSubject.trim()) { setError('Subject required'); return; }
     setLoading(true); setError('');
     try {
-      // We use a direct PATCH-like approach by re-creating
-      // For now just proceed — email subject/body sent at send time
-      setStep(4);
+      const res = await fetch(`${API_URL}/api/doc/campaigns/${campaignId}`, {
+        method: 'PUT', headers,
+        body: JSON.stringify({ email_subject: emailSubject, email_body: emailBody }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to save email settings');
+      setSuccess('Email settings saved!');
+      setTimeout(() => { setSuccess(''); setStep(4); }, 1000);
     } catch (e) { setError(e.message); }
     finally { setLoading(false); }
   };

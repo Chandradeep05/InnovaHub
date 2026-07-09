@@ -15,6 +15,7 @@ const galleryRoutes = require('./routes/gallery');
 const reportRoutes = require('./routes/reports');
 const memberRoutes = require('./routes/members');
 const emailRoutes = require('./routes/emails');
+const docEngineRoutes = require('./routes/docEngine');
 
 const app = express();
 
@@ -39,7 +40,7 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '25mb' }));
 
 // ── Keep-Alive Ping (prevents Render cold start) ─
 app.get('/ping', (req, res) => {
@@ -60,6 +61,7 @@ app.use('/api/photos', galleryRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/members', memberRoutes);
 app.use('/api/admin/emails', emailRoutes);
+app.use('/api/doc', docEngineRoutes);
 
 // Legacy route compatibility (admin pages use /api/admin/queries etc.)
 app.use('/api/admin/queries', require('./middleware/auth'), async (req, res, next) => {

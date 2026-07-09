@@ -28,6 +28,9 @@ import AdminGalleryPage from './pages/admin/AdminGalleryPage';
 import AdminReportsPage from './pages/admin/AdminReportsPage';
 import AdminMembersPage from './pages/admin/AdminMembersPage';
 import AdminEmailHubPage from './pages/admin/AdminEmailHubPage';
+import DocEnginePage from './pages/admin/DocEnginePage';
+import CampaignBuilderPage from './pages/admin/CampaignBuilderPage';
+import CampaignStatusPage from './pages/admin/CampaignStatusPage';
 
 function App() {
   // Keep Render backend warm (ping every 4 min)
@@ -67,6 +70,9 @@ function App() {
               <Route path="/admin/reports" element={<ProtectedRoute><AdminReportsPage /></ProtectedRoute>} />
               <Route path="/admin/members" element={<ProtectedRoute><AdminMembersPage /></ProtectedRoute>} />
               <Route path="/admin/emails" element={<ProtectedRoute><AdminEmailHubPage /></ProtectedRoute>} />
+              <Route path="/admin/doc" element={<ProtectedRoute><DocEnginePage /></ProtectedRoute>} />
+              <Route path="/admin/doc/campaign/new" element={<ProtectedRoute><CampaignBuilderPage /></ProtectedRoute>} />
+              <Route path="/admin/doc/campaign/:id" element={<ProtectedRoute><CampaignStatusPage /></ProtectedRoute>} />
             </Routes>
           </main>
           <Footer />

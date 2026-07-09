@@ -107,6 +107,7 @@ const AdminDashboardPage = () => {
                   { label: 'Manage Events', path: '/admin/events/add', icon: 'fa-calendar-plus', color: 'primary' },
                   { label: 'Review Ideas', path: '/admin/ideas', icon: 'fa-brain', color: 'success' },
                   { label: 'Email Hub', path: '/admin/emails', icon: 'fa-paper-plane', color: 'info' },
+                  { label: 'Doc Engine', path: '/admin/doc', icon: 'fa-file-pdf', color: 'primary' },
                   { label: 'Gallery Uploads', path: '/admin/gallery', icon: 'fa-images', color: 'warning' },
                   { label: 'Council Members', path: '/admin/members', icon: 'fa-users-cog', color: 'secondary' },
                   { label: 'Answer Queries', path: '/admin/queries', icon: 'fa-headset', color: 'danger' }

@@ -153,7 +153,9 @@ async function renderDocument(backgroundImageBuffer, layoutJson, mergeFields, op
     }
 
     // Convert from top-left origin (CSS-like) to bottom-left origin (PDF)
-    const y = height - (field.y || 0) - fontSize;
+    // Both canvas fillText and pdf-lib drawText use baseline rendering,
+    // so we only need to subtract field.y from page height.
+    const y = height - (field.y || 0);
 
     page.drawText(value, {
       x: Math.max(0, x),

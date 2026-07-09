@@ -11,6 +11,7 @@ const DocEnginePage = () => {
   const [expandedWs, setExpandedWs] = useState(null);
   const [expandedProj, setExpandedProj] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [showNewWs, setShowNewWs] = useState(false);
   const [showNewProj, setShowNewProj] = useState(null);
   const [newName, setNewName] = useState('');
@@ -27,22 +28,37 @@ const DocEnginePage = () => {
   const fetchWorkspaces = async () => {
     try {
       const res = await fetch(`${API_URL}/api/doc/workspaces`, { headers });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        setError(err.error || `Server error (${res.status})`);
+        setWorkspaces([]);
+        return;
+      }
       const data = await res.json();
-      setWorkspaces(data || []);
-    } catch (e) { console.error(e); }
+      setWorkspaces(Array.isArray(data) ? data : []);
+      setError('');
+    } catch (e) {
+      console.error(e);
+      setError('Could not connect to server. Check if the backend is running.');
+      setWorkspaces([]);
+    }
     finally { setLoading(false); }
   };
 
   const fetchProjects = async (wsId) => {
-    const res = await fetch(`${API_URL}/api/doc/projects/${wsId}`, { headers });
-    const data = await res.json();
-    setProjects(prev => ({ ...prev, [wsId]: data || [] }));
+    try {
+      const res = await fetch(`${API_URL}/api/doc/projects/${wsId}`, { headers });
+      const data = await res.json();
+      setProjects(prev => ({ ...prev, [wsId]: Array.isArray(data) ? data : [] }));
+    } catch (e) { console.error(e); }
   };
 
   const fetchCampaigns = async (projId) => {
-    const res = await fetch(`${API_URL}/api/doc/campaigns/project/${projId}`, { headers });
-    const data = await res.json();
-    setCampaigns(prev => ({ ...prev, [projId]: data || [] }));
+    try {
+      const res = await fetch(`${API_URL}/api/doc/campaigns/project/${projId}`, { headers });
+      const data = await res.json();
+      setCampaigns(prev => ({ ...prev, [projId]: Array.isArray(data) ? data : [] }));
+    } catch (e) { console.error(e); }
   };
 
   const createWorkspace = async () => {
@@ -101,6 +117,16 @@ const DocEnginePage = () => {
           </Link>
         </div>
       </div>
+
+      {/* Error Banner */}
+      {error && (
+        <div className="alert alert-error mb-3 animate-fade-in" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span><i className="fas fa-exclamation-triangle me-2"></i>{error}</span>
+          <button onClick={() => { setError(''); fetchWorkspaces(); }} className="btn btn-glass btn-sm" style={{ marginLeft: '1rem' }}>
+            <i className="fas fa-redo me-1"></i> Retry
+          </button>
+        </div>
+      )}
 
       {/* New Workspace Form */}
       {showNewWs && (

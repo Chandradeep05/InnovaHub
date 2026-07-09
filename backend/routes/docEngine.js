@@ -17,19 +17,34 @@ const STALE_LOCK_MS = 10 * 60 * 1000;
 
 /**
  * Checks if a campaign's 'sending' status is stale (>10 min with no progress).
+ * Progress is measured at the RECIPIENT level — the most recent sent_at from
+ * doc_recipients. This prevents killing a slow-but-working campaign that's
+ * hitting Brevo backoff delays.
  * If stale, resets to 'failed' so it can be retried.
  */
 async function recoverStaleLock(campaignId) {
   const { data: campaign } = await supabase
     .from('doc_campaigns')
-    .select('status, completed_at, created_at')
+    .select('status, created_at')
     .eq('id', campaignId)
     .single();
 
   if (!campaign || campaign.status !== 'sending') return false;
 
-  // Check last activity: use completed_at or fall back to created_at
-  const lastActivity = campaign.completed_at || campaign.created_at;
+  // Check RECIPIENT-level activity: most recent sent_at
+  const { data: lastSent } = await supabase
+    .from('doc_recipients')
+    .select('sent_at')
+    .eq('campaign_id', campaignId)
+    .not('sent_at', 'is', null)
+    .order('sent_at', { ascending: false })
+    .limit(1);
+
+  // Use most recent recipient send time, or campaign creation if no sends yet
+  const lastActivity = (lastSent && lastSent.length > 0)
+    ? lastSent[0].sent_at
+    : campaign.created_at;
+
   const elapsed = Date.now() - new Date(lastActivity).getTime();
 
   if (elapsed > STALE_LOCK_MS) {
@@ -37,7 +52,7 @@ async function recoverStaleLock(campaignId) {
       .from('doc_campaigns')
       .update({ status: 'failed', completed_at: new Date().toISOString() })
       .eq('id', campaignId);
-    console.warn(`🔓 Campaign ${campaignId} stale lock recovered (stuck for ${Math.round(elapsed / 60000)}min)`);
+    console.warn(`🔓 Campaign ${campaignId} stale lock recovered (no recipient activity for ${Math.round(elapsed / 60000)}min)`);
     return true;
   }
   return false;

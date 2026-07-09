@@ -73,6 +73,16 @@ async function runTests() {
   assert(result2.normalizedHeaders.includes('email_address'), 'Email Address normalized');
   assert(result2.rows[0].email === 'test@test.com', `Email extracted from email_address column: ${result2.rows[0].email}`);
 
+  // Test: tie-breaker — CSV with both 'Email' and 'Backup Email'
+  const csv3 = 'Name,Email,Backup Email\nAlice,alice@main.com,alice@backup.com';
+  const result3 = parseCSV(csv3);
+  assert(result3.rows[0].email === 'alice@main.com', `Tie-breaker: exact 'email' wins over partial 'backup_email': ${result3.rows[0].email}`);
+
+  // Test: tie-breaker — 'Backup Email' first, 'Email' second
+  const csv4 = 'Backup Email,Name,Email\nalice@backup.com,Alice,alice@main.com';
+  const result4 = parseCSV(csv4);
+  assert(result4.rows[0].email === 'alice@main.com', `Tie-breaker column order: exact 'email' still wins: ${result4.rows[0].email}`);
+
   // ── 3. Document ID Generator ────────────────────────────────
   console.log('\n📋 3. Document ID Generator');
   const ids1 = generateDocumentIds('HACK', 5);

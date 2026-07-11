@@ -8,10 +8,11 @@ const AdminDashboardPage = () => {
   const [admin, setAdmin] = useState(null);
   const [stats, setStats] = useState({
     eventsCount: 0,
-    visitors: 1245,
-    registrations: 84,
-    queries: 3
+    ideasCount: 0,
+    registrationsCount: 0,
+    pendingQueriesCount: 0
   });
+  const [activities, setActivities] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -23,16 +24,27 @@ const AdminDashboardPage = () => {
     }
     setAdmin(JSON.parse(userStr));
 
-    // Fetch stats (Dummy fallback if backend fails)
-    fetch(`${API_URL}/api/events`)
-      .then(res => res.json())
+    // Fetch live dashboard metrics and activity feed
+    fetch(`${API_URL}/api/admin/dashboard-stats`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch dashboard stats');
+        return res.json();
+      })
       .then(data => {
-        if (Array.isArray(data)) {
-          setStats(prev => ({ ...prev, eventsCount: data.length }));
-        }
+        setStats({
+          eventsCount: data.eventsCount,
+          ideasCount: data.ideasCount,
+          registrationsCount: data.registrationsCount,
+          pendingQueriesCount: data.pendingQueriesCount
+        });
+        setActivities(data.activities || []);
       })
       .catch(err => {
-        setStats(prev => ({ ...prev, eventsCount: 12 })); // Dummy fallback
+        console.error('Error fetching dashboard stats:', err);
       });
   }, [navigate]);
 
@@ -76,9 +88,9 @@ const AdminDashboardPage = () => {
         <div className="row g-4 mb-5">
           {[
             { title: 'Total Events', val: stats.eventsCount, icon: 'fa-calendar-check', color: '#4e73df', bg: 'rgba(78, 115, 223, 0.1)' },
-            { title: 'Active Ideas', val: 42, icon: 'fa-lightbulb', color: '#1cc88a', bg: 'rgba(28, 200, 138, 0.1)' },
-            { title: 'Event Registrations', val: stats.registrations, icon: 'fa-ticket-alt', color: '#f6c23e', bg: 'rgba(246, 194, 62, 0.1)' },
-            { title: 'Pending Queries', val: stats.queries, icon: 'fa-comments', color: '#e74a3b', bg: 'rgba(231, 74, 59, 0.1)' }
+            { title: 'Active Ideas', val: stats.ideasCount, icon: 'fa-lightbulb', color: '#1cc88a', bg: 'rgba(28, 200, 138, 0.1)' },
+            { title: 'Event Registrations', val: stats.registrationsCount, icon: 'fa-ticket-alt', color: '#f6c23e', bg: 'rgba(246, 194, 62, 0.1)' },
+            { title: 'Pending Queries', val: stats.pendingQueriesCount, icon: 'fa-comments', color: '#e74a3b', bg: 'rgba(231, 74, 59, 0.1)' }
           ].map((stat, idx) => (
             <div key={idx} className="col-sm-6 col-lg-3">
               <div className="glass-card border-0 rounded-4 p-4 d-flex align-items-center justify-content-between h-100 hover-lift transition-all shadow-sm" style={{ borderLeft: `5px solid ${stat.color} !important`, backgroundColor: '#fff' }}>
@@ -102,14 +114,14 @@ const AdminDashboardPage = () => {
                 <h4 className="fw-bold m-0"><i className="fas fa-rocket text-primary me-2"></i> Quick Mission Control</h4>
               </div>
               
-              <div className="row g-3">
+               <div className="row g-3">
                 {[
                   { label: 'Manage Events', path: '/admin/events/add', icon: 'fa-calendar-plus', color: 'primary' },
                   { label: 'Review Ideas', path: '/admin/ideas', icon: 'fa-brain', color: 'success' },
                   { label: 'Email Hub', path: '/admin/emails', icon: 'fa-paper-plane', color: 'info' },
                   { label: 'Doc Engine', path: '/admin/doc', icon: 'fa-file-pdf', color: 'primary' },
                   { label: 'Gallery Uploads', path: '/admin/gallery', icon: 'fa-images', color: 'warning' },
-                  { label: 'Council Members', path: '/admin/members', icon: 'fa-users-cog', color: 'secondary' },
+                  { label: 'Council Members', path: '/admin/members', icon: 'fa-users-cog', color: 'info' },
                   { label: 'Answer Queries', path: '/admin/queries', icon: 'fa-headset', color: 'danger' }
                 ].map((action, idx) => (
                   <div key={idx} className="col-md-4 col-sm-6">
@@ -135,20 +147,19 @@ const AdminDashboardPage = () => {
             <div className="bg-gradient-primary text-white rounded-4 shadow-sm p-4 h-100" style={{ background: 'linear-gradient(135deg, #4e73df 0%, #224abe 100%)' }}>
               <h4 className="fw-bold mb-4 border-bottom border-light pb-3"><i className="fas fa-bolt text-warning me-2"></i> Recent Activity</h4>
               <div className="activity-feed position-relative ps-4 ms-2" style={{ borderLeft: '2px solid rgba(255,255,255,0.3)' }}>
-                {[
-                  { text: 'New idea pitched: "AI Drone Delivery"', time: '10 mins ago', icon: 'fa-lightbulb', color: 'text-warning' },
-                  { text: 'Event "Hackathon 2026" reached 50 signups', time: '1 hr ago', icon: 'fa-users', color: 'text-info' },
-                  { text: 'System backup completed successfully', time: '5 hrs ago', icon: 'fa-server', color: 'text-success' },
-                  { text: 'New query from Jane Student', time: '1 day ago', icon: 'fa-envelope', color: 'text-light' }
-                ].map((item, i) => (
-                  <div key={i} className="mb-4 position-relative">
-                    <span className="position-absolute start-0 translate-middle" style={{ left: '-1px' }}>
-                      <i className={`fas ${item.icon} ${item.color} bg-white rounded-circle p-1 shadow-sm`} style={{ fontSize: '0.8rem' }}></i>
-                    </span>
-                    <p className="mb-1 text-white opacity-100">{item.text}</p>
-                    <small className="text-white opacity-75">{item.time}</small>
-                  </div>
-                ))}
+                {activities.length === 0 ? (
+                  <p className="text-white opacity-75 small py-2">No recent database activity found.</p>
+                ) : (
+                  activities.map((item, i) => (
+                    <div key={i} className="mb-4 position-relative">
+                      <span className="position-absolute start-0 translate-middle" style={{ left: '-1px' }}>
+                        <i className={`fas ${item.icon} ${item.color} bg-white rounded-circle p-1 shadow-sm`} style={{ fontSize: '0.8rem' }}></i>
+                      </span>
+                      <p className="mb-1 text-white opacity-100" style={{ fontSize: '0.92rem', lineHeight: '1.4' }}>{item.text}</p>
+                      <small className="text-white opacity-75">{item.time}</small>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>

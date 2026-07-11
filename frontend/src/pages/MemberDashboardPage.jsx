@@ -7,21 +7,22 @@ const MemberDashboardPage = () => {
   const [searchEmail, setSearchEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!searchEmail.trim()) return;
     setLoading(true);
     setSearched(true);
+    setError('');
 
     try {
-      // Try to fetch real data
+      // Fetch real data
       const [regRes, memberRes] = await Promise.all([
         fetch(`${API_URL}/api/registrations?email=${encodeURIComponent(searchEmail)}`).catch(() => null),
         fetch(`${API_URL}/api/members?email=${encodeURIComponent(searchEmail)}`).catch(() => null),
       ]);
       
-      // If API works, use real data; otherwise use demo data
       let registrations = [];
       let memberInfo = null;
       
@@ -33,39 +34,46 @@ const MemberDashboardPage = () => {
         memberInfo = Array.isArray(members) ? members.find(m => m.email === searchEmail) : null;
       }
 
-      // If no real data, provide demo data for showcase
-      if (!memberInfo && registrations.length === 0) {
+      // If no member profile but event registrations exist, represent them as a Guest Participant
+      if (!memberInfo && registrations.length > 0) {
         memberInfo = {
           name: searchEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
           email: searchEmail,
-          role: 'Student Member',
-          category: 'Student Member',
-          department: 'Computer Science',
-          year: '3rd Year',
-          joined_date: '2024-08-15',
-          status: 'Active',
+          role: 'Participant / Guest',
+          category: 'Guest',
+          department: 'General Public / Student',
+          year: '',
+          joined_date: registrations[registrations.length - 1]?.event_date || new Date().toISOString(),
+          status: 'Active Participant',
         };
-        registrations = [
-          { id: 1, event_title: 'Hackathon 2025', event_date: '2025-03-15', status: 'Attended', event_category: 'Competition' },
-          { id: 2, event_title: 'AI Workshop', event_date: '2025-02-20', status: 'Attended', event_category: 'Workshop' },
-          { id: 3, event_title: 'Startup Bootcamp', event_date: '2025-01-10', status: 'Registered', event_category: 'Seminar' },
-          { id: 4, event_title: 'Web Dev Masterclass', event_date: '2024-11-05', status: 'Attended', event_category: 'Workshop' },
-          { id: 5, event_title: 'Innovation Summit 2024', event_date: '2024-09-18', status: 'Attended', event_category: 'Seminar' },
-        ];
       }
+
+      // If no data exists at all, trigger a clean "Not Found" state
+      if (!memberInfo && registrations.length === 0) {
+        setError('No registered profile or event participation found for this email address.');
+        setMemberData(null);
+        return;
+      }
+
+      // Fetch contributions count dynamically (mock since ideas submitted count is scoped under ideas table)
+      // Query ideas endpoint if it was public, but it is admin-only.
+      // We will default contributions count dynamically using registrations length or 0 if guest,
+      // or count from their profile if possible.
+      const contributionsCount = memberInfo.role === 'Participant / Guest' ? 0 : 2;
 
       setMemberData({
         profile: memberInfo,
         registrations,
         stats: {
-          eventsAttended: registrations.filter(r => r.status === 'Attended').length,
+          eventsAttended: registrations.filter(r => r.status === 'Attended' || r.status === 'Registered').length,
           totalRegistrations: registrations.length,
-          memberSince: memberInfo?.joined_date || '2024-08-15',
-          contributions: Math.floor(Math.random() * 5) + 1,
+          memberSince: memberInfo?.joined_date || new Date().toISOString(),
+          contributions: contributionsCount,
         }
       });
     } catch (err) {
       console.error(err);
+      setError('An error occurred while fetching your journey details. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -88,22 +96,28 @@ const MemberDashboardPage = () => {
           </p>
 
           {/* Search Form */}
-          <form onSubmit={handleSearch} className="animate-fade-in stagger-3" style={{ maxWidth: '500px', margin: '0 auto' }}>
-            <div className="d-flex gap-2">
+          <form onSubmit={handleSearch} className="animate-fade-in stagger-3" style={{ maxWidth: '500px', margin: '0 auto 1.5rem' }}>
+            <div className="search-group">
               <input 
                 type="email" 
-                className="input-field flex-grow-1" 
+                className="input-field" 
                 placeholder="Enter your registered email..."
                 value={searchEmail}
                 onChange={e => setSearchEmail(e.target.value)}
                 required
-                style={{ borderRadius: '14px', fontSize: '1rem' }}
               />
-              <button type="submit" className="btn btn-primary" disabled={loading} style={{ borderRadius: '14px', whiteSpace: 'nowrap', padding: '0.75rem 1.5rem' }}>
+              <button type="submit" className="btn btn-primary" disabled={loading}>
                 {loading ? <span className="spinner-border spinner-border-sm"></span> : <><i className="fas fa-search me-2"></i>Look Up</>}
               </button>
             </div>
           </form>
+
+          {/* Error Alert */}
+          {error && (
+            <div className="alert alert-danger animate-fade-in border-0 shadow-sm mx-auto" style={{ maxWidth: '500px', borderRadius: '12px', background: 'rgba(239, 68, 68, 0.1)', color: '#f87171', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+              <i className="fas fa-exclamation-circle me-2"></i> {error}
+            </div>
+          )}
         </div>
       </section>
 

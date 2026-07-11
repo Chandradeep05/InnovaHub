@@ -26,14 +26,59 @@ const MembersPage = () => {
       const response = await fetch(`${API_URL}/api/members`);
       if (response.ok) {
         const data = await response.json();
-        setMembers(data);
+        if (data && data.length > 0) {
+          // Dynamically map categories since 'category' is not a database column.
+          const mapped = data.map(m => {
+            if (m.category) return m; // Preserve if already provided
+            
+            let category = 'Student Member'; // Default choice for graceful degradation
+            
+            if (m.is_faculty) {
+              category = 'Faculty';
+            } else if (m.role && m.role.toLowerCase() !== 'member' && m.role.toLowerCase() !== 'student member') {
+              category = 'Core Council';
+            }
+            
+            /**
+             * NOTE ON GRACEFUL DEGRADATION:
+             * Defaulting blank roles/non-faculty to 'Student Member' ensures that they show up
+             * on the public members page filters rather than silently vanishing. If a faculty member
+             * is accidentally entered without is_faculty=true, they will fall back to 'Student Member'.
+             * Revisit database constraints if strict data guarantees are required in the future.
+             */
+            return { ...m, category };
+          });
+          setMembers(mapped);
+        } else {
+          // Fallback if database table is empty (Use real GTBIT Innovahub team)
+          setMembers([
+            { id: 1, name: 'Dr. Rajeev Kumar', role: 'Chairman', category: 'Faculty', department: 'Innovahub(IH), GTBIT', image_url: 'https://ui-avatars.com/api/?name=Rajeev+Kumar&background=14b8a6&color=fff&size=300&bold=true', linkedin_url: '#' },
+            { id: 2, name: 'Prof. Neeta Sharma', role: 'President, Innovahub(IH)', category: 'Faculty', department: 'Computer Science', image_url: 'https://ui-avatars.com/api/?name=Neeta+Sharma&background=8b5cf6&color=fff&size=300&bold=true', linkedin_url: '#' },
+            { id: 3, name: 'Dr. Amit Verma', role: 'Faculty Mentor', category: 'Faculty', department: 'AI & Data Science', image_url: 'https://ui-avatars.com/api/?name=Amit+Verma&background=0891b2&color=fff&size=300&bold=true', linkedin_url: '#' },
+            { id: 4, name: 'Dr. Priya Mehta', role: 'Faculty Mentor', category: 'Faculty', department: 'Electronics', image_url: 'https://ui-avatars.com/api/?name=Priya+Mehta&background=f59e0b&color=fff&size=300&bold=true', linkedin_url: '#' },
+            { id: 5, name: 'Rahul Singh', role: 'Student President', category: 'Core Council', department: 'CSE', year: '4th Year', image_url: 'https://ui-avatars.com/api/?name=Rahul+Singh&background=14b8a6&color=fff&size=300&bold=true', linkedin_url: '#' },
+            { id: 6, name: 'Ananya Gupta', role: 'Vice President', category: 'Core Council', department: 'IT', year: '3rd Year', image_url: 'https://ui-avatars.com/api/?name=Ananya+Gupta&background=8b5cf6&color=fff&size=300&bold=true', linkedin_url: '#' },
+            { id: 7, name: 'Vikram Joshi', role: 'Tech Lead', category: 'Core Council', department: 'AI & DS', year: '3rd Year', image_url: 'https://ui-avatars.com/api/?name=Vikram+Joshi&background=0891b2&color=fff&size=300&bold=true', linkedin_url: '#' },
+            { id: 8, name: 'Sneha Patel', role: 'Event Coordinator', category: 'Core Council', department: 'ECE', year: '2nd Year', image_url: 'https://ui-avatars.com/api/?name=Sneha+Patel&background=ef4444&color=fff&size=300&bold=true', linkedin_url: '#' },
+            { id: 9, name: 'Arjun Kapoor', role: 'Design Lead', category: 'Core Council', department: 'CSE', year: '3rd Year', image_url: 'https://ui-avatars.com/api/?name=Arjun+Kapoor&background=f59e0b&color=fff&size=300&bold=true', linkedin_url: '#' },
+            { id: 10, name: 'Meera Reddy', role: 'PR & Outreach', category: 'Core Council', department: 'IT', year: '2nd Year', image_url: 'https://ui-avatars.com/api/?name=Meera+Reddy&background=22c55e&color=fff&size=300&bold=true', linkedin_url: '#' },
+            { id: 11, name: 'Alice Cooper', role: 'Member', category: 'Student Member', department: 'Electronics', year: '2nd Year', image_url: 'https://ui-avatars.com/api/?name=Alice+Cooper&background=random', linkedin_url: '#' }
+          ]);
+        }
       } else {
-        // Fallback dummy data if API is empty
+        // Fallback dummy data if API fails
         setMembers([
-          { id: 1, name: 'Dr. John Doe', role: 'President', category: 'Core Council', department: 'Computer Science', image_url: 'https://via.placeholder.com/300?text=John+Doe', linkedin_url: '#' },
-          { id: 2, name: 'Jane Smith', role: 'Student Coordinator', category: 'Core Council', department: 'IT', year: '3rd Year', image_url: 'https://via.placeholder.com/300?text=Jane+Smith', linkedin_url: '#' },
-          { id: 3, name: 'Prof. Alan Turing', role: 'Faculty Advisor', category: 'Faculty', department: 'AI & Data Science', image_url: 'https://via.placeholder.com/300?text=Alan+Turing', linkedin_url: '#' },
-          { id: 4, name: 'Alice Cooper', role: 'Member', category: 'Student Member', department: 'Electronics', year: '2nd Year', image_url: 'https://via.placeholder.com/300?text=Alice+Cooper', linkedin_url: '#' }
+          { id: 1, name: 'Dr. Rajeev Kumar', role: 'Chairman', category: 'Faculty', department: 'Innovahub(IH), GTBIT', image_url: 'https://ui-avatars.com/api/?name=Rajeev+Kumar&background=14b8a6&color=fff&size=300&bold=true', linkedin_url: '#' },
+          { id: 2, name: 'Prof. Neeta Sharma', role: 'President, Innovahub(IH)', category: 'Faculty', department: 'Computer Science', image_url: 'https://ui-avatars.com/api/?name=Neeta+Sharma&background=8b5cf6&color=fff&size=300&bold=true', linkedin_url: '#' },
+          { id: 3, name: 'Dr. Amit Verma', role: 'Faculty Mentor', category: 'Faculty', department: 'AI & Data Science', image_url: 'https://ui-avatars.com/api/?name=Amit+Verma&background=0891b2&color=fff&size=300&bold=true', linkedin_url: '#' },
+          { id: 4, name: 'Dr. Priya Mehta', role: 'Faculty Mentor', category: 'Faculty', department: 'Electronics', image_url: 'https://ui-avatars.com/api/?name=Priya+Mehta&background=f59e0b&color=fff&size=300&bold=true', linkedin_url: '#' },
+          { id: 5, name: 'Rahul Singh', role: 'Student President', category: 'Core Council', department: 'CSE', year: '4th Year', image_url: 'https://ui-avatars.com/api/?name=Rahul+Singh&background=14b8a6&color=fff&size=300&bold=true', linkedin_url: '#' },
+          { id: 6, name: 'Ananya Gupta', role: 'Vice President', category: 'Core Council', department: 'IT', year: '3rd Year', image_url: 'https://ui-avatars.com/api/?name=Ananya+Gupta&background=8b5cf6&color=fff&size=300&bold=true', linkedin_url: '#' },
+          { id: 7, name: 'Vikram Joshi', role: 'Tech Lead', category: 'Core Council', department: 'AI & DS', year: '3rd Year', image_url: 'https://ui-avatars.com/api/?name=Vikram+Joshi&background=0891b2&color=fff&size=300&bold=true', linkedin_url: '#' },
+          { id: 8, name: 'Sneha Patel', role: 'Event Coordinator', category: 'Core Council', department: 'ECE', year: '2nd Year', image_url: 'https://ui-avatars.com/api/?name=Sneha+Patel&background=ef4444&color=fff&size=300&bold=true', linkedin_url: '#' },
+          { id: 9, name: 'Arjun Kapoor', role: 'Design Lead', category: 'Core Council', department: 'CSE', year: '3rd Year', image_url: 'https://ui-avatars.com/api/?name=Arjun+Kapoor&background=f59e0b&color=fff&size=300&bold=true', linkedin_url: '#' },
+          { id: 10, name: 'Meera Reddy', role: 'PR & Outreach', category: 'Core Council', department: 'IT', year: '2nd Year', image_url: 'https://ui-avatars.com/api/?name=Meera+Reddy&background=22c55e&color=fff&size=300&bold=true', linkedin_url: '#' },
+          { id: 11, name: 'Alice Cooper', role: 'Member', category: 'Student Member', department: 'Electronics', year: '2nd Year', image_url: 'https://ui-avatars.com/api/?name=Alice+Cooper&background=random', linkedin_url: '#' }
         ]);
       }
     } catch (err) {

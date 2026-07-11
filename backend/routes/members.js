@@ -4,10 +4,21 @@ const authenticateAdmin = require('../middleware/auth');
 
 const router = express.Router();
 
-// GET /api/members — Public: list all members
-router.get('/', async (req, res, next) => {
+const lookupRateLimiter = require('../middleware/rateLimiter');
+
+// GET /api/members — Public: list all members (optionally filtered by email)
+router.get('/', (req, res, next) => {
+  if (req.query.email) {
+    return lookupRateLimiter(req, res, next);
+  }
+  next();
+}, async (req, res, next) => {
   try {
-    const { data, error } = await supabase.from('members').select('*').order('created_at', { ascending: true });
+    let query = supabase.from('members').select('*');
+    if (req.query.email) {
+      query = query.eq('email', req.query.email);
+    }
+    const { data, error } = await query.order('created_at', { ascending: true });
     if (error) throw error;
     res.json(data);
   } catch (err) {

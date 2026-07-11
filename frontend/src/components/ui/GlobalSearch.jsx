@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const GlobalSearch = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,6 +7,12 @@ const GlobalSearch = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Auto-close search modal when location changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location]);
 
   const searchData = [
     { title: 'Home', path: '/', category: 'Page', icon: 'fa-home' },
